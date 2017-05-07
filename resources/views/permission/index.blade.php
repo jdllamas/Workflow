@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
 				<div class="panel-heading">
-					Listado de Cursos
+					Listado de Permisos
 				</div>
 				<div class="panel-body">
 					<table class="table table-striped table-hover table-bordered" style="font-size:83%;overflow-x:scroll">
@@ -18,39 +18,21 @@
 									Descripcion
 								</th>
 								<th style="vertical-align:middle; text-align:center">
-									Anio
-								</th>
-								<th style="vertical-align:middle; text-align:center">
-									Periodo
-								</th>        
-								<th style="vertical-align:middle; text-align:center">
-									Fecha Inicio
-								</th>
-								<th style="vertical-align:middle; text-align:center">
 									Detalles
 								</th>
 							</tr>
-							@foreach($cursos as $curso)
+							@foreach($permissions as $permission)
 								<tr style="text-align:center">
 									<td style="vertical-align:middle; text-align:center">
-										{{ $curso->nombre }}
+										{{ $permission->name }}
 									</td>
 									<td style="vertical-align:middle; text-align:center">
-										{{ $curso->descripcion }}
+										{{ $permission->description }}
 									</td>
 									<td style="vertical-align:middle; text-align:center">
-										{{ $curso->anio }}
-									</td>
-									<td style="vertical-align:middle; text-align:center">
-										{{ $curso->periodo }}
-									</td>        
-									<td style="vertical-align:middle; text-align:center">
-										{{ $curso->fecha_inicio }}
-									</td>
-									<td style="vertical-align:middle; text-align:center">
-										<a href="{{ url('/curso/'.$curso->id) }}">Ver</a>
+										<a href="{{ url('/permission/'.$permission->id) }}">Ver</a>
 										<br/>
-										<a href="{{ url('/curso/'.$curso->id.'/edit') }}">Editar</a>
+										<a href="{{ url('/permission/'.$permission->id.'/edit') }}">Editar</a>
 									</td>
 								</tr>
 							@endforeach

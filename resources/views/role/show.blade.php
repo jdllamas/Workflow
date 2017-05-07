@@ -8,33 +8,21 @@
                 <div class="panel-heading">Rol</div>
                 <div class="panel-body">
 					<div class="row form-group">
-						<label for="codigo" class="col-md-4 control-label">Nombre</label>
+						<label for="name" class="col-md-4 control-label">Nombre</label>
 						<div class="col-md-6">
-							<input id="nombre" type="text" class="form-control" name="nombre" value="{{ $curso->nombre }}" disabled="disabled" required>
+							<input id="name" type="text" class="form-control" name="name" value="{{ $role->name }}" disabled="disabled" required>
 						</div>
 					</div>
 					<div class="row form-group">
-                        <label for="descripcion" class="col-md-4 control-label">Descripcion</label>
-                        <div class="col-md-6">
-                            <input id="descripcion" type="text" class="form-control" name="descripcion" value="{{ $curso->descripcion }}" disabled="disabled" required>
-                        </div>
-                    </div>
+						<label for="display_name" class="col-md-4 control-label">Nombre Para Mostrar</label>
+						<div class="col-md-6">
+							<input id="display_name" type="text" class="form-control" name="display_name" value="{{ $role->display_name }}" disabled="disabled" required>
+						</div>
+					</div>
 					<div class="row form-group">
-                        <label for="anio" class="col-md-4 control-label">Año</label>
+                        <label for="description" class="col-md-4 control-label">Descripción</label>
                         <div class="col-md-6">
-                            <input id="anio" type="text" class="form-control" name="anio" value="{{ $curso->anio }}" disabled="disabled" required>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <label for="periodo" class="col-md-4 control-label">Periodo</label>
-                        <div class="col-md-6">
-                            <input id="periodo" type="text" class="form-control" name="periodo" value="{{ $curso->periodo }}" disabled="disabled" required>
-                        </div>
-                    </div>
-					<div class="row form-group">
-                        <label for="fecha_inicio" class="col-md-4 control-label">Fecha Inicio</label>
-                        <div class="col-md-6">
-                            <input id="fecha_inicio" type="date" class="form-control" name="fecha_inicio" value="{{ $curso->fecha_inicio }}" disabled="disabled" required>
+                            <input id="description" type="text" class="form-control" name="description" value="{{ $role->description }}" disabled="disabled" required>
                         </div>
                     </div>
 				</div>

@@ -61,7 +61,7 @@ class RoleController extends Controller
      */
     public function show($id) {
         $role = Role::find($id);
-        $permissions = $role->permissions;
+        $permissions = $role->perms;
         return view('role.show', compact('role', 'permissions'));
     }
 
@@ -75,7 +75,8 @@ class RoleController extends Controller
         // get the customer
         $role = Role::find($id);
         // show the edit form and pass the customer
-		$permissions = $role->permissions->toArray(); 
+		
+		$permissions = $role->perms->toArray(); 
 		$permissionsGeneral = Permission::all();
         return view('role.edit', compact('role', 'permissions', 'permissionsGeneral'));
     }
@@ -99,9 +100,11 @@ class RoleController extends Controller
             $role->name = $post_data['name'];
             $role->description = $post_data['description'];
 			$role->name = $post_data['display_name'];
-            $role->permissions()->sync($post_data['permissions'], false);
-            $role->save();
-            $permissions = $role->permissions;
+			$role->save();
+			$role->attachPermissions($post_data['permissions']);
+            //$role->perms()->sync($post_data['permissions'], false);
+            //$role->save();
+            $permissions = $role->perms;
 			return view('role.show', compact('role', 'permissions'));
         }
     }

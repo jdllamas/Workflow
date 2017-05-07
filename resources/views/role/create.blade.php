@@ -7,13 +7,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Nuevo Rol</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/curso') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/role') }}">
                         {{ csrf_field() }}
 						
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nombre</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="nombre" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -23,14 +23,14 @@
                             </div>
                         </div>
 						
-						<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nombre Para Mostrar</label>
+						<div class="form-group{{ $errors->has('display_name') ? ' has-error' : '' }}">
+                            <label for="display_name" class="col-md-4 control-label">Nombre Para Mostrar</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="nombre" value="{{ old('name') }}" required autofocus>
+                                <input id="display_name" type="text" class="form-control" name="display_name" value="{{ old('display_name') }}" required autofocus>
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('display_name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('display_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -55,7 +55,7 @@
                             <label for="permissions" class="col-md-4 control-label">Permisos</label>
                             <div class="col-md-6">
                                 @if(!$permissionsGeneral->isEmpty())
-									<select multiple="multiple" name="profesores[]" id="profesores" class="form-control">
+									<select multiple="multiple" name="permissions[]" id="permissions" class="form-control">
 										@foreach($permissionsGeneral as $permission)
 											<option value="{{$permission->id}}">{{$permission->name}} {{$permission->description}}</option>
 										@endforeach
