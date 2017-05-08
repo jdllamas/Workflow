@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Process extends Model
+class RequestData extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,17 +12,12 @@ class Process extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'display_name', 'description'
+        'name', 'value'
     ];
 
-	public function users()
-    {
-        return $this->belongsToMany('App\User', 'processadmin');
-    }
-	
 	public function request()
     {
-        return $this->belongsTo('App\Request');
+        return $this->hasMany('App\Request');
     }
 	
 }

@@ -29,8 +29,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 	
-	public function roles()
+	public function process()
     {
-        return $this->belongsToMany('App\Roles', 'process_admin');
+        return $this->belongsToMany('App\Process', 'ProcessAdmin');
     }
+	
+	public function request()
+    {
+        return $this->belongsTo('App\Request');
+    }
+	
+	public function requestFile()
+    {
+        return $this->belongsTo('App\RequestFile');
+    }
+	
+	public function requeststakeholders()
+    {
+        return $this->belongsToMany('App\Request', 'requeststakeholder');
+    }
+	
 }
