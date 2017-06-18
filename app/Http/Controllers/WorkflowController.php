@@ -82,11 +82,7 @@ class WorkflowController extends Controller
 					campo0_.val_dfl as val17_12_0_--,
 					--campo0_.cod_nvl as cod18_12_0_ 
 					from mocp0002 campo0_ where campo0_.codigo='102'"));
-<<<<<<< HEAD
 		//return $archivador;
-=======
-		//return $campos;
->>>>>>> origin/master
 		$procesos = DB::select(DB::raw("		
 		select 	bandejadoc0_.id as id19_,
 				bandejadoc0_.archivo as archivo19_,
