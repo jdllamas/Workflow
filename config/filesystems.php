@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('custom','FILESYSTEM_DRIVER', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +47,12 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+		
+		'custom' => [
+			'driver' => 'local',
+			'root'   => '/captura',
+		],
+		
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
