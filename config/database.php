@@ -56,7 +56,8 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => '104.236.213.201',
+            //'host' => '104.236.213.201',
+			'host' => 'localhost',
             'port' => '5432',
             'database' => 'DBCapturaWF',
             'username' => 'postgres',

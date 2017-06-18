@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => 'pcjllamas', //env('pcjllamas', 'kronos', 'local'), //'FILESYSTEM_DRIVER'),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +47,17 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+		
+		'kronos' => [
+			'driver' => 'local',
+			'root'   => '/captura/documentos/',
+		],
+		
+		'pcjllamas' => [
+			'driver' => 'local',
+			'root'   => 'C://documentos//',
+		],
+		
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

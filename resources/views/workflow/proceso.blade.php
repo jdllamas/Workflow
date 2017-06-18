@@ -71,7 +71,9 @@
 					<div class="x_panel">
 					  <div class="x_title">
 						<h2>Actividades Asignadas</h2> &nbsp&nbsp&nbsp
-						<a  href="crear_operacion.html" class="btn btn-warning" role="button">Nuevo Proceso</a>
+						@if(session('username') == 'USUARIO1')
+							<a  href="\workflow\create" class="btn btn-warning" role="button">Nuevo Proceso</a>
+						@endif
 						<div class="clearfix"></div>
 					  </div>
 					  <div class="x_content">
@@ -84,7 +86,6 @@
 								<th>Identificación</th>
 								<th>Tercero</th>
 								<th>Tipo Servicio</th>
-								<th>Numero Solicitud</th>
 								<th>Porcentaje (%)</th>
 								<th>Ver</th>
 								<th>Editar</th>
@@ -95,15 +96,19 @@
 							@foreach($procesos as $proceso)
 							<tr>
 							  <td>{{$proceso->id19_}}</td>
-								<td>Inicio / Preparación</td>
+								<td>
+								@if($proceso->cod25_19_==1) Inicio / Preparación
+                                @elseif($proceso->cod25_19_==2) En Proceso
+                                @elseif($proceso->cod25_19_==3)  Finalizado 
+                                @endif 
+								</td>
 								<td>{{$proceso->campo3_19_}}</td>
 								<td>{{$proceso->campo4_19_}}</td>
 								<td>{{$proceso->campo5_19_}}</td>
-								<td>14</td>
-								<td>0</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><button class="btn btn-success btn-xs" data-title="Ver" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
-								<td><p data-placement="top" data-toggle="tooltip" title="Editar"><button class="btn btn-primary btn-xs" data-title="Editar" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><button class="btn btn-danger btn-xs" data-title="Eliminar" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
+								<td>{{$proceso->por23_19_}}%</td>							
+								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
+								<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
+								<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><a href="" class="btn btn-danger btn-xs" data-title="Eliminar"><span class=" glyphicon glyphicon-trash"></span></a></p></td>
 						
 							</tr>                       
 							@endforeach

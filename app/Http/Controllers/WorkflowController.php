@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Validator;
 use View;
 use Session;
@@ -81,7 +82,7 @@ class WorkflowController extends Controller
 					campo0_.val_dfl as val17_12_0_--,
 					--campo0_.cod_nvl as cod18_12_0_ 
 					from mocp0002 campo0_ where campo0_.codigo='102'"));
-		return $campos;
+		//return $archivador;
 		$procesos = DB::select(DB::raw("		
 		select 	bandejadoc0_.id as id19_,
 				bandejadoc0_.archivo as archivo19_,
@@ -132,6 +133,9 @@ class WorkflowController extends Controller
 	public function estadistica()
     {
         //
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
 		return View::make('workflow.estadistica');
     }
 	
@@ -143,6 +147,10 @@ class WorkflowController extends Controller
     public function create()
     {
         //
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		return View::make('workflow.create');
     }
 
     /**
@@ -154,7 +162,110 @@ class WorkflowController extends Controller
     public function store(Request $request)
     {
         //
-    }
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		//return Input::all();
+		/*
+		
+		insert into mocp0047 (archivo, campo0, campo1, campo2, campo3, campo4, campo5, campo6, campo7, campo8, campo9, campo10, campo11, seleccionado, archivado, fecha, tip_car, num_rev, pre_doc, con_doc, fec_rev, por_tmp, cod_est, archivador, usuario, id_wf2, id) 
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		
+		*/
+		
+		/*
+		
+		-- *******************************************************************************************--
+		-- Crear un proceso o workflow.
+		-- id: El campo 1235, es un numero que se toma de la secuencia - documento_seq
+		se obtiene asi desde postgres: select nextval('documento_seq');
+		-- campo0 hasta campo4 es la información que identifica el proceso.
+		-- usuario SUPERVISOR o USUARIO1, es el usuario que crea el proceso.
+		-- archivador: en este caso 92  para tu caso siempre sera el "102" 
+		-- *******************************************************************************************--
+		
+		*/
+		//campo0 id
+		//campo1 nombre
+		//campo2 tipo servicio
+		//campo3 numero solicitud
+		
+		//cod_est -> Estado del requerimiento
+		//1. Inicio
+		//2. En proceso
+		//3. Finalizado
+		
+		$seq_num = DB::table(DB::raw("nextval('documento_seq')"))->value('nextval');
+		$sig_seq = (int)str_replace(' ', '', $seq_num);
+		//return $sig_seq;
+		DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
+					values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
+		
+		/*
+		-- *******************************************************************************************--
+		-- Insertar un documento asociado al proceso.
+		-- codigo: 1235, la llave foranea a la mocp0047
+		-- consecutivo: es caracter, 001, 002, 003.
+		-- archivo: nombre del archivo 
+		-- usuario: usuario logueado que sube/carga el archivo 
+		-- *******************************************************************************************--
+		*/
+		$file = $request->file('archivo');
+		if($request->hasFile('archivo'))
+		{
+			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
+			
+			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, usuario) 
+					values (". $sig_seq .",'001','". $file->getClientOriginalName() ."','". Session::get('username'). "')"); 
+			
+			$file->storeAs('seguros/' , $file->getClientOriginalName());
+		}
+		
+		
+		
+		
+		/*
+		-- *******************************************************************************************--
+		-- Insertar un registro en el historico o log del proceso
+		-- El primer campo 7778 es un consecutivo que viene de la secuencia "log_accion_seq"
+		-- se obtiene desde postgres asi: select nextval('log_accion_seq');
+		-- cod_acc=123, este es uno de las "acciones" o codigos de inicio de mi workflow que tengo, 
+		esos codigos te los tendras aprender de memoria, de acuerdo con la parametrizacion de tu worflow
+		-- id_doc_bndj = 1235, es la llave foranea que relaciona a que proceso (mocp0047) pertenece.
+		
+		-- ** Workflow 25: Seguros ** --
+		
+		-- Actividad 99: Registro de Clientes
+		-- Actividad 100: Asignacion de Servicio
+		-- Actividad 101: Recoleccion de Firmas
+		-- Actividad 102: Revision de Firmas
+		-- Actividad 103: Archivo Final
+		
+		Accion 197;"REGISTRO";"APROBACION"
+		Accion 202;"REGISTRO";"RECHAZO"
+		Accion 198;"ASIGNACION";"APROBACION"
+		Accion 203;"ASIGNACION";"RECHAZO"
+		Accion 199;"RECOLECCION";"APROBACION"
+		Accion 204;"RECOLECCION";"RECHAZO"
+		Accion 200;"REVISION";"APROBACION"
+		Accion 205;"REVISION";"RECHAZO"
+		Accion 201;"ARCHIVO";"APROBACION"
+		Accion 206;"ARCHIVO";"RECHAZO"
+		-- *******************************************************************************************--
+		*/
+		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
+		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
+		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
+		values (". $sig_seq_2 .", 197, ". $sig_seq .",'".Session::get('username')."')"); 
+		
+		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
+		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
+		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
+		values (". $sig_seq_2 .", 198, ". $sig_seq .", 'USUARIO2')"); 
+		
+		return redirect()->intended('/workflow');
+
+	}
 
     /**
      * Display the specified resource.
@@ -176,6 +287,12 @@ class WorkflowController extends Controller
     public function edit($id)
     {
         //
+		//
+		$seq_num = DB::table(DB::raw("select * from mocp0047 where "))->get();
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		return View::make('workflow.create');
     }
 
     /**
