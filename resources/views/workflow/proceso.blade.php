@@ -106,8 +106,8 @@
 								<td>{{$proceso->campo4_19_}}</td>
 								<td>{{$proceso->campo5_19_}}</td>
 								<td>{{$proceso->por23_19_}}%</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
+								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="/workflow/{{$proceso->id19_}}" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
+								<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="/workflow/{{$proceso->id19_}}/edit" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
 								<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><a href="" class="btn btn-danger btn-xs" data-title="Eliminar"><span class=" glyphicon glyphicon-trash"></span></a></p></td>
 						
 							</tr>                       

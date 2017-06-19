@@ -83,7 +83,7 @@ class WorkflowController extends Controller
 					--campo0_.cod_nvl as cod18_12_0_ 
 					from mocp0002 campo0_ where campo0_.codigo='102'"));
 		//return $archivador;
-		$procesos = DB::select(DB::raw("		
+		$procesos = DB::select(DB::raw("
 		select 	bandejadoc0_.id as id19_,
 				bandejadoc0_.archivo as archivo19_,
 				bandejadoc0_.campo0 as campo3_19_,
@@ -136,7 +136,35 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		return View::make('workflow.estadistica');
+		
+		$procesos_por_usuario = DB::select("
+			select count(logaccion1_.username) as count_username,
+			logaccion1_.username as usuario19_actual
+			from	mocp0047 bandejadoc0_, 
+					mocp0023 logaccion1_ 
+			where	bandejadoc0_.id = logaccion1_.id_doc_bndj
+			and		bandejadoc0_.archivador='102' 
+			and		bandejadoc0_.cod_est < 3
+			and   (	(bandejadoc0_.id , logaccion1_.cod_log) in
+					(select logaccion2_.id_doc_bndj, max(logaccion2_.cod_log)
+					from	mocp0023 logaccion2_,
+							mocp0047 bandejadoc3_ 
+					where logaccion2_.id_doc_bndj=bandejadoc3_.id 
+					group by logaccion2_.id_doc_bndj)) 
+					group by logaccion1_.username
+					order by logaccion1_.username
+
+		");
+		$usuarios = array();
+		$count_proc = array();
+		foreach($procesos_por_usuario as $proceso_por_usuario){
+			array_push($usuarios, $proceso_por_usuario->usuario19_actual);
+			array_push($count_proc, $proceso_por_usuario->count_username);
+		}
+		
+		return View::make('workflow.estadistica')
+		->with('usuarios',json_encode($usuarios))
+		->with('count_proc',json_encode($count_proc,JSON_NUMERIC_CHECK));
     }
 	
     /**
@@ -166,13 +194,16 @@ class WorkflowController extends Controller
 			return redirect()->intended('/login');
 		}
 		//return Input::all();
-		/*
+		$rules= array(
+				'identificacion'=> 'required',
+				'nombres'=> 'required',
+				'id_servicio'=> 'required',
+				'tipo_servicio'=> 'required',
+	        );
 		
-		insert into mocp0047 (archivo, campo0, campo1, campo2, campo3, campo4, campo5, campo6, campo7, campo8, campo9, campo10, campo11, seleccionado, archivado, fecha, tip_car, num_rev, pre_doc, con_doc, fec_rev, por_tmp, cod_est, archivador, usuario, id_wf2, id) 
-		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		
-		*/
-		
+		$validate = Validator::make($request, $rules);
+		if (!$validate->passes()) {
+		}
 		/*
 		
 		-- *******************************************************************************************--
@@ -195,8 +226,14 @@ class WorkflowController extends Controller
 		//2. En proceso
 		//3. Finalizado
 		
-		$seq_num = DB::table(DB::raw("nextval('documento_seq')"))->value('nextval');
-		$sig_seq = (int)str_replace(' ', '', $seq_num);
+		$existen = true;
+		while($existen){
+			$seq_num = DB::table(DB::raw("nextval('documento_seq')"))->value('nextval');
+			$sig_seq = (int)str_replace(' ', '', $seq_num);
+			$registros = DB::table(DB::raw("mocp0047 where id = " . $sig_seq))->value('id');
+			$existen = (empty($registros) ? false : true);
+		}
+		
 		//return $sig_seq;
 		DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
 					values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
@@ -276,6 +313,17 @@ class WorkflowController extends Controller
     public function show($id)
     {
         //
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
+		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
+		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
+		//return array($registros,$logs,$documentos);
+		return View::make('workflow.show')
+		->with('resgistros', $registros)
+		->with('logs', $logs)
+		->with('documentos', $documentos);
     }
 
     /**
@@ -288,11 +336,15 @@ class WorkflowController extends Controller
     {
         //
 		//
-		$seq_num = DB::table(DB::raw("select * from mocp0047 where "))->get();
+		
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		return View::make('workflow.create');
+		$registro = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
+		$log = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
+		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
+		//return View::make('workflow.edit')->with('',);
+		return array($registro,$log,$documentos);
     }
 
     /**

@@ -88,7 +88,7 @@
 				  -->
 				  <li><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">Estadisticas Generales</a></li>
+                      <li><a href="/workflow/estadistica">Estadisticas Generales</a></li>
                     </ul>
                   </li>
 				 <!-- 
@@ -186,7 +186,7 @@
 		
 		@yield('content');
 		
-        <!-- footer content -->
+        <!-- footer content
         <footer>
           <div class="pull-right">
             Workflow 360º <a href="#">Version 2.0 - 2017</a>
@@ -238,5 +238,8 @@
     <script src="{{ URL::asset('css/workflow/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 	<!-- jQuery Smart Wizard -->
     <script src="{{ URL::asset('css/workflow/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js') }}"></script>
+	
+	@yield('postscripts');
+	
   </body>
 </html>
