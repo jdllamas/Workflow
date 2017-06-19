@@ -201,8 +201,9 @@ class WorkflowController extends Controller
 				'tipo_servicio'=> 'required',
 	        );
 		
-		$validate = Validator::make($request, $rules);
-		if (!$validate->passes()) {
+		$validate = Validator::make(Input::all(), $rules);
+		if ($validate->fails()) {
+		   return redirect()->back()->withErrors($validate)->withInput();
 		}
 		/*
 		
@@ -316,12 +317,13 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
+		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->first();
 		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
-		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
+		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
 		//return array($registros,$logs,$documentos);
+		//return $documentos;
 		return View::make('workflow.show')
-		->with('resgistros', $registros)
+		->with('registros', $registros)
 		->with('logs', $logs)
 		->with('documentos', $documentos);
     }
@@ -343,8 +345,11 @@ class WorkflowController extends Controller
 		$registro = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
 		$log = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
-		//return View::make('workflow.edit')->with('',);
-		return array($registro,$log,$documentos);
+		return View::make('workflow.edit')
+		->with('registros', $registros)
+		->with('logs', $logs)
+		->with('documentos', $documentos);
+		//return array($registro,$log,$documentos);
     }
 
     /**
@@ -369,4 +374,12 @@ class WorkflowController extends Controller
     {
         //
     }
+	
+	public function downloadfile($id)
+    {
+        $file = Storage::disk('pcjllamas')->get('seguros/'.$entry->filename); 
+		return (new Response($file, 200))
+        ->header('Content-Type', $entry->mime);
+	}
+	
 }

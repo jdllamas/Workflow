@@ -11,10 +11,10 @@
 
         <div class="row" role="main">
             <div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="dashboard_graph">
+				<div class="">
 
-					<div class="row x_title">
-						  <div class="col-md-4">
+					<div class="row">
+						  <div class="col-md-4"><br>
 							<h3>Workflow Seguros  <!--<small>Graph title sub-title</small>--></h3>
 						  </div>
 					</div>
@@ -77,11 +77,6 @@
 						  <ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
-							<li class="dropdown">
-							  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-							</li>
-							<li><a class="close-link"><i class="fa fa-close"></i></a>
-							</li>
 						  </ul>
 						  <div class="clearfix"></div>
 						</div>
@@ -105,20 +100,20 @@
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION <span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text"   id="first-name"  value="{{$registros->campo0}}" required="required"  class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">TERCERO<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="last-name" value="{{$registros->campo1}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">OTRO</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+												  <input id="middle-name"  class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
 												</div>
 											  </div>						 
 
@@ -143,71 +138,18 @@
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">TIPO SERVICIO<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="first-name" value="{{$registros->campo2}}"  required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NUMERO SOLICITUD<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="last-name" value="{{$registros->campo3}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  
-											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">PROCESO</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <div id="gender" class="btn-group" data-toggle="buttons">
-													<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-													  <input type="radio" name="gender" value="male"> &nbsp; Rechazado &nbsp;
-													</label>
-													<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-													  <input type="radio" name="gender" value="female">  Aprobado 
-													</label>
-												  </div>
-												</div>
-											  </div>
-											</form>
-										</div>
-									</div>
-								</div>
-							  </div>
-							</li>
-							<li>
-							  <div class="block">
-								<div class="tags">
-								  <a href="" class="tag">
-									<span>Paso 3</span>
-								  </a>
-								</div>
-								<div class="block_content">
-								  <h2 class="title">  <a>Asignar actividad</a> </h2>
-									<div class="form-group"><br>
-										<div class="x_panel">					  
-											<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"><br>									  
-											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">USUARIOS</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <select class="select2_single form-control" tabindex="-1">
-													<option></option>
-													<option value="AK">Alaska</option>
-													<option value="HI">Hawaii</option>
-													<option value="CA">California</option>
-													<option value="NV">Nevada</option>
-													<option value="OR">Oregon</option>
-													<option value="WA">Washington</option>
-													<option value="AZ">Arizona</option>
-													<option value="CO">Colorado</option>
-													<option value="ID">Idaho</option>
-												  </select>
-												</div>
-											  </div>
-											   <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">OBSERVACIONES </label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <textarea id="message" required="required" class="form-control" name="message"></textarea>
-												</div>
-											  </div>
+											 
 											</form>
 										</div>
 									</div>
@@ -227,17 +169,6 @@
 							<ul class="nav navbar-right panel_toolbox">
 							  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							  </li>
-							  <li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-								<ul class="dropdown-menu" role="menu">
-								  <li><a href="#">Settings 1</a>
-								  </li>
-								  <li><a href="#">Settings 2</a>
-								  </li>
-								</ul>
-							  </li>
-							  <li><a class="close-link"><i class="fa fa-close"></i></a>
-							  </li>
 							</ul>
 							<div class="clearfix"></div>
 						</div>
@@ -254,47 +185,22 @@
 											<th></th>	
 											<th>Archivos</th>
 											<th>Tipo Documento</th>
-											<th>Tamaño</th>
-											<th>Fecha</th>
 											<th>Acciones</th>
 											
 											
 										</tr>
 									</thead>
 									<tbody>
+										@foreach($documentos as $doc)
 										<tr>
-											
-											<td>001</td>
-											<td>doc_6_doc_3_Egreso.pdf</td>
-											<td>Listado General de Personas</td>																
-											<td>523.0 KB </td>
-											<td>16-sep-16 09:48:2</td>
+											<td>{{$doc->consecutivo}}</td>
+											<td>{{$doc->archivo}}</td>
+											<td>{{$doc->nom_tp_doc}}</td>
 											<td class="text-center">
-												<a href="#"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
+												<a href="/workflow/downloadfile/"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
 											</td>
 										</tr>
-										<tr>
-											
-											<td>001</td>
-											<td>doc_6_doc_3_Egreso.pdf</td>
-											<td>Listado General de Personas</td>																
-											<td>523.0 KB </td>
-											<td>16-sep-16 09:48:2</td>
-											<td class="text-center">
-												<a href="#"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
-											</td>
-										</tr>
-										<tr>
-											
-											<td>001</td>
-											<td>doc_6_doc_3_Egreso.pdf</td>
-											<td>Listado General de Personas</td>																
-											<td>523.0 KB </td>
-											<td>16-sep-16 09:48:2</td>
-											<td class="text-center">
-												<a href="#"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
-											</td>
-										</tr>
+										@endforeach
 									</tbody>
 								</table>
 							</div>
