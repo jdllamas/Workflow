@@ -181,8 +181,7 @@
 								<table class="table table-bordered table-hover vmiddle">
 									<thead>
 										<tr>
-											
-											<th></th>	
+											<th>Consecutivo</th>	
 											<th>Archivos</th>
 											<th>Tipo Documento</th>
 											<th>Acciones</th>
@@ -193,11 +192,12 @@
 									<tbody>
 										@foreach($documentos as $doc)
 										<tr>
+											
 											<td>{{$doc->consecutivo}}</td>
 											<td>{{$doc->archivo}}</td>
 											<td>{{$doc->nom_tp_doc}}</td>
 											<td class="text-center">
-												<a href="/workflow/downloadfile/"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
+												<a href="/workflow/downloadfile/{{$doc->codigo}}/{{$doc->consecutivo}}"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
 											</td>
 										</tr>
 										@endforeach
