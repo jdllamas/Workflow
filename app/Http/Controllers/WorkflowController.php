@@ -372,12 +372,17 @@ class WorkflowController extends Controller
         //
     }
 	
-	public function downloadfile($id)
+	public function downloadfile($id, $consecutivo)
     {
         //
 		
+		$documento = DB::select("
+			select archivo
+			from	mocp0048
+			where	codigo = ". $id ."
+			and		consecutivo = '". $consecutivo ."'")->first();
 		
-		$file = Storage::disk('pcjllamas')->get('seguros/'.$entry->filename); 
+		$file = Storage::disk('pcjllamas')->get('seguros/'.$documento->archivo); 
 		return (new Response($file, 200))
               ->header('Content-Type', $entry->mime);
 	}
