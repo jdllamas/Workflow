@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use View;
 use Session;
+use Storage;
+use Illuminate\Http\Response;
 
 class WorkflowController extends Controller
 {
@@ -205,7 +207,10 @@ class WorkflowController extends Controller
 		if ($validate->fails()) {
 
 		   return redirect()->back()->withErrors($validate)->withInput();
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 		}
 		/*
 		
@@ -323,10 +328,14 @@ class WorkflowController extends Controller
 		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
 		//return array($registros,$logs,$documentos);
+<<<<<<< HEAD
 
 		//return $documentos;
 
 	
+=======
+		//return $documentos;
+>>>>>>> origin/master
 		return View::make('workflow.show')
 		->with('registros', $registros)
 		->with('logs', $logs)
@@ -380,7 +389,10 @@ class WorkflowController extends Controller
         //
     }
 	
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	public function downloadfile($id, $consecutivo)
     {
         //
@@ -389,11 +401,15 @@ class WorkflowController extends Controller
 			select archivo
 			from	mocp0048
 			where	codigo = ". $id ."
-			and		consecutivo = '". $consecutivo ."'")->first();
+			and		consecutivo = '". $consecutivo ."'")[0];
+		//$file = Storage::disk('pcjllamas')->get('seguros/'.$documento->archivo); 
+		return response()->download(Storage::disk('pcjllamas')->getDriver()->getAdapter()->getPathPrefix().'seguros/'.$documento->archivo);
 		
-		$file = Storage::disk('pcjllamas')->get('seguros/'.$documento->archivo); 
 		return (new Response($file, 200))
               ->header('Content-Type', $entry->mime);
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }
