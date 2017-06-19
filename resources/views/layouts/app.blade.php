@@ -50,7 +50,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
            <div class="navbar " style="border: 0;">
-              <a href="#" class="site_title"><img src="{{URL::asset('/css/workflow/images/logo.png')}}" >&nbsp;<span>Kronos S. &amp; C.</span></a>
+              <a href="/workflow/proceso" class="site_title"><img src="{{URL::asset('/css/workflow/images/logo.png')}}" >&nbsp;<span>Kronos S. &amp; C.</span></a>
             </div>
 			<br />
 			<!-- sidebar menu -->

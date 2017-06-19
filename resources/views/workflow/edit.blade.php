@@ -8,9 +8,99 @@
             <div class="row">
 
               <div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="">
+					<!------------->
+					 <div class="x_panel">
+						<div class="x_title">
+						  <h2>Actividad Incial</h2>
+						  <ul class="nav navbar-right panel_toolbox">
+							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							</li>
+						  </ul>
+						  <div class="clearfix"></div>
+						</div>
+						<div class="x_content">
+							<fieldset disabled>
+								<ul class="list-unstyled timeline">
+							<li>
+							  <div class="block">
+								<div class="tags">
+								  <a href="" class="tag">
+									<span>Paso 1</span>
+								  </a>
+								</div>
+								<div class="block_content">
+								  <h2 class="title"> <a>Registro de terceros</a> </h2>
+									<div class="form-group"><br>
+										<div class="x_panel">
+											 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+											  <div class="form-group"><br>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION <span class="required">*</span>
+												</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+												  <input type="text"   id="first-name"  value="" required="required"  class="form-control col-md-7 col-xs-12">
+												</div>
+											  </div>
+											  <div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES<span class="required">*</span>
+												</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+												  <input type="text" id="last-name" value="" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												</div>
+											  </div>
+											  						 
+
+											</form>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+							  <div class="block">
+								<div class="tags">
+								  <a href="" class="tag">
+									<span>Paso 2</span>
+								  </a>
+								</div>
+								<div class="block_content">
+								  <h2 class="title"> <a>Registrar servicios</a> </h2>
+									<div class="form-group"><br>
+										<div class="x_panel"><br>			 
+											<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"><br>
+											  <div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">TIPO SERVICIO<span class="required">*</span>
+												</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+												  <input type="text" id="first-name" value=""  required="required" class="form-control col-md-7 col-xs-12">
+												</div>
+											  </div>
+											  <div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NUMERO SOLICITUD<span class="required">*</span>
+												</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+												  <input type="text" id="last-name" value="" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												</div>
+											  </div>
+											  
+											 
+											</form>
+										</div>
+									</div>
+								</div>
+							  </div>
+							</li>
+						  </ul>
+							
+							</fieldset>
+						</div>
+					</div>
+				
+				</div>
+			  <!-------->
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Proceso</h2>
+                    <h2>Actividad Asignada</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -19,23 +109,7 @@
                     <!-- Smart Wizard -->
                     <div id="wizard" class="form_wizard wizard_horizontal">
                       <ul class="wizard_steps">
-                        <li>
-                          <a href="#step-1"><span class="step_no">1</span>
-						  <span class="step_descr">
-							Paso 1<br />
-                            <small>Paso 1 Registro de información</small>
-							</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-2">
-                            <span class="step_no">2</span>
-                            <span class="step_descr">
-                                              Paso 2<br />
-                                              <small>Paso 2 Registro de servicios</small>
-                                          </span>
-                          </a>
-                        </li>
+                     
                         <li>
                           <a href="#step-3">
                             <span class="step_no">3</span>
@@ -55,76 +129,7 @@
                           </a>
                         </li>
                       </ul>
-						<div id="step-1">
-							<!------>
-								<div class="col-md-1"></div>
-								<div class="col-md-10"><br><br>
-									<div class="x_panel">
-									  <div class="x_title">
-										<h2>Información general</h2>                  
-										<div class="clearfix"></div>
-										</div>
-										<div class="form-group"><br>
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="identificacion"  value="{{$registros->campo0}}"   name="identificacion" required="required" class="form-control col-md-7 col-xs-12"/>
-										</div>
-										</div>
-										<div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">TERCERO</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="nombres" value="{{$registros->campo1}}" name="nombres" required="required" class="form-control col-md-7 col-xs-12"/>
-										</div>
-										</div>
-										
-									</div>
-								</div>
-							<!----->         
-						</div>
 					
-						<div id="step-2">							
-							<!------>
-								<div class="col-md-1"></div>
-								<div class="col-md-10"><br><br>
-									<div class="x_panel">
-									  <div class="x_title">
-										<h2>Registrar servicios</h2>                  
-										<div class="clearfix"></div>
-									  </div>
-										  <div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">TIPO SERVICIO<span class="required"></span>
-											</label>
-											<div class="col-md-6 col-sm-6 col-xs-12">
-												<select id="tipo_servicio" name="tipo_servicio" class="select2_single form-control" tabindex="-1">
-													<option></option>
-													<option value="VENTA DE SEGURO">VENTA DE SEGURO</option>
-												</select>
-											</div>
-										  </div>
-											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">IDENTIFICACION DE SERVICIO</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" id="id_servicio" value="{{$registros->campo2}}"  name="id_servicio" required="required" class="form-control col-md-7 col-xs-12"/>
-												</div>
-											</div>
-										  <div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12">PROCESO</label>
-											<div class="col-md-6 col-sm-6 col-xs-12">
-											  <div id="gender" class="btn-group" data-toggle="buttons">
-												<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-												  <input type="radio" name="estado" value="0"> &nbsp; Rechazado &nbsp;
-												</label>
-												<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-												  <input type="radio" name="estado" value="1" checked="checked">  Aprobado 
-												</label>
-											  </div>
-											</div>
-										  </div>
-									</div>
-								</div>
-							<!----->
-							
-						</div>
 						<div id="step-3">						   
 							
 							<!------>

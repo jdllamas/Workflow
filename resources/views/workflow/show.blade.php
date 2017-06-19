@@ -27,6 +27,8 @@
 						<div class="x_title">
 							<h2>Seguimiento</h2>
 							<ul class="nav navbar-right panel_toolbox">
+							   <li><p data-placement="top" data-toggle="tooltip" title="Regresar"><a href="/workflow/proceso" class="btn btn-default btn-xs" data-title="Ver"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
+							  </li>
 							  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							  </li>
 							</ul>
@@ -73,7 +75,7 @@
 					<!------------->
 					 <div class="x_panel">
 						<div class="x_title">
-						  <h2>Actividad <small>Registro Cliente</small></h2>
+						  <h2>Actividad Realizada</h2>
 						  <ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
@@ -91,7 +93,7 @@
 								  </a>
 								</div>
 								<div class="block_content">
-								  <h2 class="title"> <a>Registro terceros</a> </h2>
+								  <h2 class="title"> <a>Registro de terceros</a> </h2>
 									<div class="form-group"><br>
 										<div class="x_panel">
 											 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
@@ -104,16 +106,10 @@
 												</div>
 											  </div>
 											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">TERCERO<span class="required">*</span>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 												  <input type="text" id="last-name" value="{{$registros->campo1}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">OTRO</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input id="middle-name"  class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
 												</div>
 											  </div>						 
 

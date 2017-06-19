@@ -203,11 +203,9 @@ class WorkflowController extends Controller
 		
 		$validate = Validator::make(Input::all(), $rules);
 		if ($validate->fails()) {
-<<<<<<< HEAD
+
 		   return redirect()->back()->withErrors($validate)->withInput();
-=======
-			return redirect()->back()->withErrors($validate)->withInput();
->>>>>>> origin/master
+
 		}
 		/*
 		
@@ -325,11 +323,10 @@ class WorkflowController extends Controller
 		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
 		//return array($registros,$logs,$documentos);
-<<<<<<< HEAD
+
 		//return $documentos;
-=======
-		return $documentos;
->>>>>>> origin/master
+
+	
 		return View::make('workflow.show')
 		->with('registros', $registros)
 		->with('logs', $logs)
@@ -350,8 +347,8 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		$registro = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
-		$log = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
+		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
+		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
 		return View::make('workflow.edit')
 		->with('registros', $registros)
@@ -383,15 +380,7 @@ class WorkflowController extends Controller
         //
     }
 	
-<<<<<<< HEAD
-	public function downloadfile($id)
-    {
-        $file = Storage::disk('pcjllamas')->get('seguros/'.$entry->filename); 
-		return (new Response($file, 200))
-        ->header('Content-Type', $entry->mime);
-	}
-	
-=======
+
 	public function downloadfile($id, $consecutivo)
     {
         //
@@ -406,5 +395,5 @@ class WorkflowController extends Controller
 		return (new Response($file, 200))
               ->header('Content-Type', $entry->mime);
 	}
->>>>>>> origin/master
+
 }
