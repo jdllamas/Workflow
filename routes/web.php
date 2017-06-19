@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('role', 'RoleController');
 Route::resource('permission', 'PermissionController');
 
+Route::get('/workflow/downloadfile', 'WorkflowController@downloadfile');
 Route::get('/workflow/estadistica', 'WorkflowController@estadistica');
 Route::get('/workflow/proceso', 'WorkflowController@proceso');
 Route::resource('workflow', 'WorkflowController');

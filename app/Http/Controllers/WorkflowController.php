@@ -201,8 +201,9 @@ class WorkflowController extends Controller
 				'tipo_servicio'=> 'required',
 	        );
 		
-		$validate = Validator::make($request, $rules);
-		if (!$validate->passes()) {
+		$validate = Validator::make(Input::all(), $rules);
+		if ($validate->fails()) {
+			return redirect()->back()->withErrors($validate)->withInput();
 		}
 		/*
 		
@@ -252,8 +253,8 @@ class WorkflowController extends Controller
 		{
 			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
 			
-			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, usuario) 
-					values (". $sig_seq .",'001','". $file->getClientOriginalName() ."','". Session::get('username'). "')"); 
+			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, arc_org, usuario) 
+					values (". $sig_seq .",'001','". $file->getClientOriginalName() ."','". $file->getClientOriginalName() ."','".Session::get('username'). "')"); 
 			
 			$file->storeAs('seguros/' , $file->getClientOriginalName());
 		}
@@ -292,15 +293,15 @@ class WorkflowController extends Controller
 		*/
 		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
 		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
-		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
-		values (". $sig_seq_2 .", 197, ". $sig_seq .",'".Session::get('username')."')"); 
+		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
+		values (". $sig_seq_2 .", 197, ". $sig_seq .",'".Session::get('username')."','". Input::get('observacion') ."')"); 
 		
 		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
 		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
 		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
 		values (". $sig_seq_2 .", 198, ". $sig_seq .", 'USUARIO2')"); 
 		
-		return redirect()->intended('/workflow');
+		return redirect()->intended('/workflow/proceso');
 
 	}
 
@@ -316,12 +317,13 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->get();
+		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->first();
 		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
-		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
+		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
 		//return array($registros,$logs,$documentos);
+		return $documentos;
 		return View::make('workflow.show')
-		->with('resgistros', $registros)
+		->with('registros', $registros)
 		->with('logs', $logs)
 		->with('documentos', $documentos);
     }
@@ -369,4 +371,14 @@ class WorkflowController extends Controller
     {
         //
     }
+	
+	public function downloadfile($id)
+    {
+        //
+		
+		
+		$file = Storage::disk('pcjllamas')->get('seguros/'.$entry->filename); 
+		return (new Response($file, 200))
+              ->header('Content-Type', $entry->mime);
+	}
 }
