@@ -139,16 +139,16 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">ACTIVIDADES<span class="required"></span>
 											</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<select id="tipo_servicio" name="tipo_servicio" class="select2_single form-control" tabindex="-1">
+												<select id="accion" name="accion" class="select2_single form-control" tabindex="-1">
 													<option></option>
-													<option value="99">ASIGNACION DE CLIENTE</option>
+													<option value="197">ASIGNACION DE CLIENTE</option>
 												</select>
 											</div>
 										  </div>
 											  <div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">USUARIOS</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <select class="select2_single form-control" tabindex="-1">
+												  <select name="usersiguiente" name="usersiguiente" class="select2_single form-control" tabindex="-1">
 													<option></option>
 													<option value="USUARIO2">USUARIO 2</option>
 												  </select>

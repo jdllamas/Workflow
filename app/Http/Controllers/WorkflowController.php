@@ -203,7 +203,11 @@ class WorkflowController extends Controller
 		
 		$validate = Validator::make(Input::all(), $rules);
 		if ($validate->fails()) {
+<<<<<<< HEAD
 		   return redirect()->back()->withErrors($validate)->withInput();
+=======
+			return redirect()->back()->withErrors($validate)->withInput();
+>>>>>>> origin/master
 		}
 		/*
 		
@@ -253,8 +257,8 @@ class WorkflowController extends Controller
 		{
 			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
 			
-			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, usuario) 
-					values (". $sig_seq .",'001','". $file->getClientOriginalName() ."','". Session::get('username'). "')"); 
+			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, arc_org, usuario) 
+					values (". $sig_seq .",'001','". $file->getClientOriginalName() ."','". $file->getClientOriginalName() ."','".Session::get('username'). "')"); 
 			
 			$file->storeAs('seguros/' , $file->getClientOriginalName());
 		}
@@ -293,15 +297,15 @@ class WorkflowController extends Controller
 		*/
 		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
 		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
-		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
-		values (". $sig_seq_2 .", 197, ". $sig_seq .",'".Session::get('username')."')"); 
+		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
+		values (". $sig_seq_2 .", 197, ". $sig_seq .",'".Session::get('username')."','". Input::get('observacion') ."')"); 
 		
 		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
 		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
 		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username)
 		values (". $sig_seq_2 .", 198, ". $sig_seq .", 'USUARIO2')"); 
 		
-		return redirect()->intended('/workflow');
+		return redirect()->intended('/workflow/proceso');
 
 	}
 
@@ -321,7 +325,11 @@ class WorkflowController extends Controller
 		$logs = DB::table(DB::raw("mocp0023 where id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
 		//return array($registros,$logs,$documentos);
+<<<<<<< HEAD
 		//return $documentos;
+=======
+		return $documentos;
+>>>>>>> origin/master
 		return View::make('workflow.show')
 		->with('registros', $registros)
 		->with('logs', $logs)
@@ -375,6 +383,7 @@ class WorkflowController extends Controller
         //
     }
 	
+<<<<<<< HEAD
 	public function downloadfile($id)
     {
         $file = Storage::disk('pcjllamas')->get('seguros/'.$entry->filename); 
@@ -382,4 +391,20 @@ class WorkflowController extends Controller
         ->header('Content-Type', $entry->mime);
 	}
 	
+=======
+	public function downloadfile($id, $consecutivo)
+    {
+        //
+		
+		$documento = DB::select("
+			select archivo
+			from	mocp0048
+			where	codigo = ". $id ."
+			and		consecutivo = '". $consecutivo ."'")->first();
+		
+		$file = Storage::disk('pcjllamas')->get('seguros/'.$documento->archivo); 
+		return (new Response($file, 200))
+              ->header('Content-Type', $entry->mime);
+	}
+>>>>>>> origin/master
 }
