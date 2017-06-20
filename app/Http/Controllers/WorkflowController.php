@@ -355,8 +355,6 @@ class WorkflowController extends Controller
     public function edit($id)
     {
         //
-		//
-		
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
@@ -369,7 +367,7 @@ class WorkflowController extends Controller
 		FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
 		WHERE a.cod_act = d.cod_act
 		AND a.cod_act = c.cod_act 
-		AND a.cod_act_anterior = ". $ultimolog->cod_act_anterior ."
+		AND a.cod_act_anterior = ". $ultimolog->cod_act ."
 		AND c.username = e.username
 		AND a.apr_acc = true
 		AND a.rec_acc = false
@@ -397,31 +395,38 @@ class WorkflowController extends Controller
 			return redirect()->intended('/login');
 		}
 		
-		
 		$existen = true;
 		while($existen){
-			$formatted_value = sprintf("%05d", $value);
 			$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
 			$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
-			$registros = DB::table(DB::raw("mocp0023 where codigo = " . $sig_seq_2))->value('id');
+			$registros = DB::table(DB::raw("mocp0023 where cod_log = " . $sig_seq_2))->value('cod_log');
 			$existen = (empty($registros) ? false : true);
 		}
-		
-		
+		list($usuario, $cod_acc) = explode("-",Input::get('usuario_accion'));
 		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
-		values (". $sig_seq_2 .", 197, ". $id .",'".Session::get('username')."','". Input::get('observacion') ."')"); 
+		values (". $sig_seq_2 .",".$cod_acc .",".$id.",'".$usuario."','". Input::get('observaciones') ."')"); 
+		
+		
+		
 		
 		$file = $request->file('archivo');
 		if($request->hasFile('archivo'))
 		{
 			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
-			
+			$ultimo_documento = DB::select("
+			select codigo, max(cast(consecutivo as integer)) as consecutivo
+			from mocp0048
+			where codigo =". $id ."
+			group by codigo
+			order by codigo")[0];
+			$sig_consecutivo = str_pad(($ultimo_documento->consecutivo) + 1, 5, '0', STR_PAD_LEFT);
 			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, arc_org, usuario) 
-					values (". $sig_seq .",'00001','". $file->getClientOriginalName() ."','". $file->getClientOriginalName() ."','".Session::get('username'). "')"); 
+					values (". $id .",'".$sig_consecutivo."','". $file->getClientOriginalName() ."','". $file->getClientOriginalName() ."','".Session::get('username'). "')"); 
 			
 			$file->storeAs('seguros/' , $file->getClientOriginalName());
 		}
 		
+		return redirect()->intended('/workflow/proceso');
     }
 
     /**
