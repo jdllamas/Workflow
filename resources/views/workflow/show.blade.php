@@ -43,7 +43,6 @@
 										<tr>
 											<div class=" panel-heading text-center">
 											<th>Fecha</th>
-											<th>Accion</th>
 											<th>Actividad</th>
 											<th>Usuario</th>
 											<th>Comentario</th>
@@ -55,8 +54,7 @@
 										<tr>
 											
 											<td>{{$log->fec_log}}</td>
-											<td>{{$log->cod_acc}}</td>																
-											<td>REGISTRO CLIENTE</td>
+											<td>{{$log->des_act}}</td>
 											<td>{{$log->username}}</td>
 											<td>{{$log->obs_log}}</td>
 											
@@ -97,17 +95,14 @@
 									<div class="form-group"><br>
 										<div class="x_panel">
 											 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
 											  <div class="form-group"><br>
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION <span class="required">*</span>
-												</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 												  <input type="text"   id="first-name"  value="{{$registros->campo0}}" required="required"  class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES<span class="required">*</span>
-												</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 												  <input type="text" id="last-name" value="{{$registros->campo1}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
 												</div>

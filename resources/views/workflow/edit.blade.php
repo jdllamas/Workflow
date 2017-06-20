@@ -14,6 +14,7 @@
 						<div class="x_title">
 						  <h2>Actividad Incial</h2>
 						  <ul class="nav navbar-right panel_toolbox">
+							<li><p data-placement="top" data-toggle="tooltip" title="Regresar"><a href="/workflow/proceso" class="btn btn-default btn-xs" data-title="Ver"><span class="glyphicon glyphicon-arrow-left"></span></a></p></li>
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
 						  </ul>
@@ -34,23 +35,18 @@
 									<div class="form-group"><br>
 										<div class="x_panel">
 											 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
 											  <div class="form-group"><br>
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION <span class="required">*</span>
-												</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text"   id="first-name"  value="" required="required"  class="form-control col-md-7 col-xs-12">
+												  <input type="text"   id="first-name"  value="{{$registro->campo0}}" required="required"  class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES<span class="required">*</span>
-												</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="last-name" value="" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="last-name" value="{{$registro->campo1}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
-											  						 
-
 											</form>
 										</div>
 									</div>
@@ -72,18 +68,16 @@
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">TIPO SERVICIO<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="first-name" value=""  required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="first-name" value="{{$registro->campo2}}"  required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
 											  <div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NUMERO SOLICITUD<span class="required">*</span>
 												</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <input type="text" id="last-name" value="" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+												  <input type="text" id="last-name" value="{{$registro->campo3}}" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
 												</div>
 											  </div>
-											  
-											 
 											</form>
 										</div>
 									</div>
@@ -151,20 +145,21 @@
 											</div>
 										  </div>
 											  <div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">USUARIOS</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">ACTIVIDADES / USUARIOS</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <select class="select2_single form-control" tabindex="-1">
-													<option></option>
-													<option value="USUARIO2">USUARIO 2</option>
-												  </select>
+												<select id="usuario_accion" name="usuario_accion" class="select2_single form-control" tabindex="-1">
+													@foreach($acciones_disponibles as $accion_disponible)
+														<option value="{{ $accion_disponible->username }}-{{ $accion_disponible->cod_acc }}">{{ $accion_disponible->usr_act}}</option>
+													@endforeach
+												</select>
 												</div>
-											  </div>
-											   <div class="form-group">
+											</div>											  
+											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">OBSERVACIONES </label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-												  <textarea id="observaciones" required="required" class="form-control" name="observaciones"></textarea>
+													<textarea id="observaciones" required="required" class="form-control" name="observaciones"></textarea>
 												</div>
-											  </div>
+											</div>
 											
 									</div>
 								</div>
