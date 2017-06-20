@@ -11,6 +11,10 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Nuevo Proceso</h2>
+					<ul class="nav navbar-right panel_toolbox">
+					   <li><p data-placement="top" data-toggle="tooltip" title="Regresar"><a href="/workflow/proceso" class="btn btn-default btn-xs" data-title="Ver"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
+					  </li>
+					</ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
