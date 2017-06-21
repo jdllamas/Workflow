@@ -10,6 +10,7 @@ use View;
 use Session;
 use Storage;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 class WorkflowController extends Controller
 {
@@ -373,6 +374,7 @@ class WorkflowController extends Controller
 		AND a.rec_acc = false
 		ORDER BY a.cod_acc, c.username");
 		
+		
 		return View::make('workflow.edit')
 		->with('registro', $registro)
 		->with('logs', $logs)
@@ -403,16 +405,23 @@ class WorkflowController extends Controller
 			$existen = (empty($registros) ? false : true);
 		}
 		list($usuario, $cod_acc) = explode("-",Input::get('usuario_accion'));
-		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
-		values (". $sig_seq_2 .",".$cod_acc .",".$id.",'".$usuario."','". Input::get('observaciones') ."')"); 
-		
-		
-		
+		$cod = $sig_seq = (int)str_replace(' ', '', $cod_acc);
+		if($cod == 0){
+			DB::statement("UPDATE mocp0047 SET cod_est = 3 where id = " . $id);
+		}
+		else{
+			DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
+			values (". $sig_seq_2 .",".$cod_acc .",".$id.",'".$usuario."','". Input::get('observaciones') ."')"); 
+		}
 		
 		$file = $request->file('archivo');
 		if($request->hasFile('archivo'))
 		{
 			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
+			//return $sig_seq;
+		DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
+					values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
+					
 			$ultimo_documento = DB::select("
 			select codigo, max(cast(consecutivo as integer)) as consecutivo
 			from mocp0048
@@ -439,7 +448,53 @@ class WorkflowController extends Controller
     {
         //
     }
-	
+	public function consulta(){
+		
+		$procesos = DB::select(DB::raw("
+		select 	bandejadoc0_.id as id19_,
+				bandejadoc0_.archivo as archivo19_,
+				bandejadoc0_.campo0 as campo3_19_,
+				bandejadoc0_.campo1 as campo4_19_,
+				bandejadoc0_.campo2 as campo5_19_,
+				bandejadoc0_.campo3 as campo6_19_, 
+				bandejadoc0_.campo4 as campo7_19_, 
+				bandejadoc0_.campo5 as campo8_19_, 
+				bandejadoc0_.campo6 as campo9_19_, 
+				bandejadoc0_.campo7 as campo10_19_,
+				bandejadoc0_.campo8 as campo11_19_, 
+				bandejadoc0_.campo9 as campo12_19_,
+				bandejadoc0_.campo10 as campo13_19_,
+				bandejadoc0_.campo11 as campo14_19_,
+				bandejadoc0_.seleccionado as selecci15_19_,
+				bandejadoc0_.archivado as archivado19_,
+				bandejadoc0_.fecha as fecha19_,
+				bandejadoc0_.tip_car as tip18_19_,
+				bandejadoc0_.num_rev as num19_19_,
+				bandejadoc0_.pre_doc as pre20_19_,
+				bandejadoc0_.con_doc as con21_19_,
+				bandejadoc0_.fec_rev as fec22_19_,
+				bandejadoc0_.por_tmp as por23_19_,
+				--bandejadoc0_.cod_nvl as cod24_19_,
+				bandejadoc0_.cod_est as cod25_19_,
+				bandejadoc0_.archivador as archivador19_,
+				bandejadoc0_.usuario as usuario19_--,
+				--bandejadoc0_.id_wf2 as id28_19_ 
+				from	mocp0047 bandejadoc0_, 
+						mocp0023 logaccion1_ 
+				where	bandejadoc0_.id = logaccion1_.id_doc_bndj
+				and		bandejadoc0_.archivador='102' 
+				and   (	(bandejadoc0_.id , logaccion1_.cod_log) in
+						(select logaccion2_.id_doc_bndj, max(logaccion2_.cod_log)
+						from	mocp0023 logaccion2_,
+								mocp0047 bandejadoc3_ 
+						where logaccion2_.id_doc_bndj=bandejadoc3_.id 
+						group by logaccion2_.id_doc_bndj)) 
+						order by bandejadoc0_.id"));
+		
+		//return $procesos;
+		return View::make('workflow.consulta')->with('procesos', $procesos);
+		
+	}
 	public function downloadfile($id, $consecutivo)
     {
         //

@@ -143,9 +143,13 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">ACTIVIDADES / USUARIOS</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
 											<select id="usuario_accion" name="usuario_accion" class="select2_single form-control" tabindex="-1">
-												@foreach($acciones_disponibles as $accion_disponible)
-													<option value="{{ $accion_disponible->username }}-{{ $accion_disponible->cod_acc }}">{{ $accion_disponible->usr_act}}</option>
-												@endforeach
+												@if(empty(array_filter($acciones_disponibles)))
+													<option value="-0">FINALIZAR PROCESO</option>
+												@else
+													@foreach($acciones_disponibles as $accion_disponible)
+														<option value="{{ $accion_disponible->username }}-{{ $accion_disponible->cod_acc }}">{{ $accion_disponible->usr_act}}</option>
+													@endforeach
+												@endif
 											</select>
 											</div>
 										</div>											  

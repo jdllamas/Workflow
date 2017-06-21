@@ -24,5 +24,6 @@ Route::resource('permission', 'PermissionController');
 
 Route::get('/workflow/downloadfile/{id}/{consecutivo}', 'WorkflowController@downloadfile');
 Route::get('/workflow/estadistica', 'WorkflowController@estadistica');
+Route::get('/workflow/consulta', 'WorkflowController@consulta');
 Route::get('/workflow/proceso', 'WorkflowController@proceso');
 Route::resource('workflow', 'WorkflowController');
