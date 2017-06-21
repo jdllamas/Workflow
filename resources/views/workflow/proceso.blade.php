@@ -77,87 +77,88 @@
 						<div class="clearfix"></div>
 					  </div>
 					  <div class="x_content">
-						
-						<table id="datatable-buttons" class="table table-striped table-bordered">
-						  <thead>
-						   <tr>
-								<th>Cod.</th>
-								<th>Estado</th>
-								<th>Identificación</th>
-								<th>Tercero</th>
-								<th>Tipo Servicio</th>
-								<th>Porcentaje (%)</th>
-								<th>Ver</th>
-								<th>Editar</th>
-								<th>Eliminar</th>
-							</tr>
-						  </thead>
-						  <tbody>
-							@foreach($procesos as $proceso)
-							<tr>
-							  <td>{{$proceso->id19_}}</td>
-								<td>
-								@if($proceso->cod25_19_==1) Inicio / Preparación
-                                @elseif($proceso->cod25_19_==2) En Proceso
-                                @elseif($proceso->cod25_19_==3)  Finalizado 
-                                @endif 
-								</td>
-								<td>{{$proceso->campo3_19_}}</td>
-								<td>{{$proceso->campo4_19_}}</td>
-								<td>{{$proceso->campo5_19_}}</td>
-								<td>{{$proceso->por23_19_}}%</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="/workflow/{{$proceso->id19_}}" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="/workflow/{{$proceso->id19_}}/edit" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><a href="" class="btn btn-danger btn-xs" data-title="Eliminar"><span class=" glyphicon glyphicon-trash"></span></a></p></td>
-						
-							</tr>                       
-							@endforeach
-							<!--
-							<tr>
-								<td>2</td>
-								<td>Operacion Seguros</td>
-							  	<td>Inicio / Preparación</td>
-								<td>980034289</td>
-								<td>BELKIS BUELVAS</td>
-								<td>SEGURO DE VIDA</td>
-								<td>14</td>
-								<td>0</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
-								<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
-						
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Operacion Workflow</td>
-							  	<td>Inicio / Preparación</td>
-								<td>980034289</td>
-								<td>JORGE LLAMAS</td>
-								<td>SEGURO DE VIDA</td>
-								<td>14</td>
-								<td>0</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
-								<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
-						
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>Operacion Workflow</td>
-							  	<td>Inicio / Preparación</td>
-								<td>980034289</td>
-								<td>6MARIA RIVAS GONZALEZ</td>
-								<td>SEGURO DE VIDA</td>
-								<td>14</td>
-								<td>0</td>							
-								<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
-								<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-								<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
-						
-							</tr>
-							-->
-						  </tbody>
-						</table>
+						<div class="table-responsive">
+							<table id="datatable-buttons" class="table table-striped table-bordered ">
+							  <thead>
+							   <tr>
+									<th>Cod.</th>
+									<th>Estado</th>
+									<th>Identificación</th>
+									<th>Tercero</th>
+									<th>Tipo Servicio</th>
+									<th>Porcentaje (%)</th>
+									<th>Ver</th>
+									<th>Editar</th>
+									<!--<th>Eliminar</th>->
+								</tr>
+							  </thead>
+							  <tbody>
+								@foreach($procesos as $proceso)
+								<tr>
+								  <td>{{$proceso->id19_}}</td>
+									<td>
+									@if($proceso->cod25_19_==1) Inicio / Preparación
+									@elseif($proceso->cod25_19_==2) En Proceso
+									@elseif($proceso->cod25_19_==3)  Finalizado 
+									@endif 
+									</td>
+									<td>{{$proceso->campo3_19_}}</td>
+									<td>{{$proceso->campo4_19_}}</td>
+									<td>{{$proceso->campo5_19_}}</td>
+									<td>{{$proceso->por23_19_}}%</td>							
+									<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="/workflow/{{$proceso->id19_}}" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
+									<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="/workflow/{{$proceso->id19_}}/edit" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td><!--
+									<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><a href="" class="btn btn-danger btn-xs" data-title="Eliminar"><span class=" glyphicon glyphicon-trash"></span></a></p></td>-->
+							
+								</tr>                       
+								@endforeach
+								<!--
+								<tr>
+									<td>2</td>
+									<td>Operacion Seguros</td>
+									<td>Inicio / Preparación</td>
+									<td>980034289</td>
+									<td>BELKIS BUELVAS</td>
+									<td>SEGURO DE VIDA</td>
+									<td>14</td>
+									<td>0</td>							
+									<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
+									<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+									<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
+							
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>Operacion Workflow</td>
+									<td>Inicio / Preparación</td>
+									<td>980034289</td>
+									<td>JORGE LLAMAS</td>
+									<td>SEGURO DE VIDA</td>
+									<td>14</td>
+									<td>0</td>							
+									<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
+									<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+									<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
+							
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>Operacion Workflow</td>
+									<td>Inicio / Preparación</td>
+									<td>980034289</td>
+									<td>6MARIA RIVAS GONZALEZ</td>
+									<td>SEGURO DE VIDA</td>
+									<td>14</td>
+									<td>0</td>							
+									<td><p data-placement="top" data-toggle="tooltip" title="Show"><button class="btn btn-success btn-xs" data-title="Show" data-toggle="modal" data-target="#show" ><span class="glyphicon glyphicon-file"></span></button></p></td>								
+									<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+									<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class=" glyphicon glyphicon-trash"></span></button></p></td>
+							
+								</tr>
+								-->
+							  </tbody>
+							</table>
+						</div>
 					  </div>
 					</div>
               </div>

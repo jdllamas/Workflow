@@ -37,32 +37,33 @@
 						<div class="x_content">
 						  
 							<div class="panel panel-default">
-								
-								<table class="table table-bordered table-hover vmiddle">
-									<thead>
-										<tr>
-											<div class=" panel-heading text-center">
-											<th>Fecha</th>
-											<th>Actividad</th>
-											<th>Usuario</th>
-											<th>Comentario</th>
-											</div>
-										</tr>
-									</thead>
-									<tbody>
-										@foreach($logs as $log)
-										<tr>
-											
-											<td>{{$log->fec_log}}</td>
-											<td>{{$log->des_act}}</td>
-											<td>{{$log->username}}</td>
-											<td>{{$log->obs_log}}</td>
-											
-										</tr>
-										@endforeach
-									
-									</tbody>
-								</table>
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover vmiddle">
+										<thead>
+											<tr>
+												<div class=" panel-heading text-center">
+												<th>Fecha</th>
+												<th>Actividad</th>
+												<th>Usuario</th>
+												<th>Comentario</th>
+												</div>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($logs as $log)
+											<tr>
+												
+												<td>{{$log->fec_log}}</td>
+												<td>{{$log->des_act}}</td>
+												<td>{{$log->username}}</td>
+												<td>{{$log->obs_log}}</td>
+												
+											</tr>
+											@endforeach
+										
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -169,31 +170,33 @@
 								<div class="panel-heading text-center">
 									<span><strong><span class="glyphicon glyphicon-folder-open"> </span> Archivos</strong></span>
 								</div>
-								<table class="table table-bordered table-hover vmiddle">
-									<thead>
-										<tr>
-											<th>Consecutivo</th>	
-											<th>Archivos</th>
-											<th>Tipo Documento</th>
-											<th>Acciones</th>
-											
-											
-										</tr>
-									</thead>
-									<tbody>
-										@foreach($documentos as $doc)
-										<tr>
-											
-											<td>{{$doc->consecutivo}}</td>
-											<td>{{$doc->archivo}}</td>
-											<td>{{$doc->nom_tp_doc}}</td>
-											<td class="text-center">
-												<a href="/workflow/downloadfile/{{$doc->codigo}}/{{$doc->consecutivo}}"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
-											</td>
-										</tr>
-										@endforeach
-									</tbody>
-								</table>
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover vmiddle">
+										<thead>
+											<tr>
+												<th>Consecutivo</th>	
+												<th>Archivos</th>
+												<th>Tipo Documento</th>
+												<th>Acciones</th>
+												
+												
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($documentos as $doc)
+											<tr>
+												
+												<td>{{$doc->consecutivo}}</td>
+												<td>{{$doc->archivo}}</td>
+												<td>{{$doc->nom_tp_doc}}</td>
+												<td class="text-center">
+													<a href="/workflow/downloadfile/{{$doc->codigo}}/{{$doc->consecutivo}}"><span class="btn btn-sm btn-primary glyphicon glyphicon-file"></span></a>
+												</td>
+											</tr>
+											@endforeach
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
