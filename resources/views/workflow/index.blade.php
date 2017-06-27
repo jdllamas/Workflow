@@ -34,6 +34,18 @@
                           </div>
                         </div>
                         <!-- price element -->
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                          <div class="pricing">
+                            <div class="title">
+                              <h2>Proceso</h2>
+                              <h3>CARGA MASIVA</h3>							  
+                            </div>
+							<div class="pricing_footer">
+                                <a href="/workflow/disponibilidad" class="btn btn-round btn-warning btn-block" role="button">Ingresar </a>
+                              </div>
+                          </div>
+                        </div>
+                        <!-- price element -->
 
                        <!-- price element 
                          <div class="col-md-3 col-sm-6 col-xs-12">

@@ -15,6 +15,9 @@
         ]) !!};
     </script>
     <title>{{ config('app.name', 'Workflow 360°') }}</title>
+	
+	@yield('stylescss');
+	
     <!-- Bootstrap -->
 	<link href="{{ asset('css/workflow/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <!-- Font Awesome -->
@@ -38,9 +41,11 @@
     <link href="{{ asset('css/workflow/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/workflow/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/workflow/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
-	
-	
-	
+	<!-- FullCalendar -->
+	<link href="{{ asset('css/workflow/vendors/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/workflow/vendors/fullcalendar/dist/fullcalendar.print.css') }}" rel="stylesheet" media="print">
+
+
     <!-- Custom Theme Style -->
 	<link href="{{ asset('css/workflow/build/css/custom.min.css') }}" rel="stylesheet"/>
   </head>
@@ -58,8 +63,9 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-check-square-o"></i> Proceso<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="/workflow/proceso">Archivador Seguros</a></li>
+                    <ul class="nav child_menu">                    
+					   <li><a href="/workflow/disponibilidad">Carga Masiva</a></li>
+					    <li><a href="/workflow/proceso">Archivador Seguros</a></li>
                     </ul>
                   </li>
 				  <!--
@@ -91,7 +97,7 @@
                       <li><a href="/workflow/estadistica">Estadisticas Generales</a></li>
                     </ul>
                   </li>
-				  <li><a><i class="fa fa-desktop"></i> Elementos<span class="fa fa-chevron-down"></span></a>
+				  <li><a><i class="fa fa-desktop"></i> Gestion<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/workflow/consulta">Módulo Consulta</a></li>
                     </ul>
@@ -155,6 +161,7 @@
               </div>
 
               <ul class="nav navbar-nav navbar-right">
+				
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="{{URL::asset('/css/workflow/images/user.png')}}" alt="">{{Session('username')}}
@@ -198,10 +205,13 @@
 	<script src="{{ URL::asset('css/workflow/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- FastClick -->
 	<script src="{{ URL::asset('css/workflow/vendors/fastclick/lib/fastclick.js') }}"></script>
+    <!-- FullCalendar -->
+	<script src="{{ URL::asset('css/workflow/vendors/moment/min/moment.min.js') }}"></script>
+	<script src="{{ URL::asset('css/workflow/vendors/fullcalendar/dist/fullcalendar.min.js') }}"></script>
     <!-- NProgress -->
 	<script src="{{ URL::asset('css/workflow/vendors/nprogress/nprogress.js') }}"></script>
-    <!-- Custom Theme Scripts -->
-	<script src="{{ URL::asset('css/workflow/build/js/custom.min.js') }}"></script>
+	<!-- bootstrap-daterangepicker -->
+    <script src="{{ URL::asset('css/workflow/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 	<!-- Chart.js -->
     <script src="{{ URL::asset('css/workflow/vendors/Chart.js/dist/Chart.min.js') }}"></script>
     <!-- gauge.js -->
@@ -228,13 +238,13 @@
     <script src="{{ URL::asset('css/workflow/vendors/jqvmap/dist/jquery.vmap.js') }}"></script>
     <script src="{{ URL::asset('css/workflow/vendors/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ URL::asset('css/workflow/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js') }}"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="{{ URL::asset('css/workflow/vendors/moment/min/moment.min.js') }}"></script>
-    <script src="{{ URL::asset('css/workflow/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-	<!-- jQuery Smart Wizard -->
+    <!-- jQuery Smart Wizard -->
     <script src="{{ URL::asset('css/workflow/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js') }}"></script>
 	
-	@yield('postscripts');
+    <!-- Custom Theme Scripts -->
+	<script src="{{ URL::asset('css/workflow/build/js/custom.min.js') }}"></script>
+
+    @yield('postscripts');
 	
   </body>
 </html>

@@ -182,7 +182,9 @@ class WorkflowController extends Controller
 			return redirect()->intended('/login');
 		}
 		
-		$acciones_disponibles = DB::select("SELECT
+		$acciones_disponibles = $this->get_acciones(true,99);
+		/*
+		DB::select("SELECT
 		a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
 		FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
 		WHERE a.cod_act = d.cod_act
@@ -192,7 +194,7 @@ class WorkflowController extends Controller
 		AND a.apr_acc = true
 		AND a.rec_acc = false
 		ORDER BY a.cod_acc, c.username");
-		
+		*/
 		return View::make('workflow.create')
 		->with('acciones_disponibles',$acciones_disponibles);
     }
@@ -363,6 +365,20 @@ class WorkflowController extends Controller
 		$logs = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
 		$ultimolog = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id. " order by cod_log desc"))->first();
+		$acciones_disponibles = DB::select("
+			SELECT
+			a.cod_acc, c.username, d.des_act,
+			case
+				when (a.apr_acc = false and a.rec_acc = true) then 'RECHAZADO / ' || d.des_act||' / ' || e.nombre
+				when (a.apr_acc = true and a.rec_acc = false) then 'APROBADO / ' || d.des_act||' / ' || e.nombre 
+			end as usr_act
+			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
+			WHERE a.cod_act = d.cod_act
+			AND a.cod_act = c.cod_act 
+			AND a.cod_act_anterior = ". $ultimolog->cod_act ."
+			AND c.username = e.username
+			ORDER BY a.cod_acc, c.username");
+	/*
 		$acciones_disponibles = DB::select("SELECT
 		a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
 		FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
@@ -373,7 +389,7 @@ class WorkflowController extends Controller
 		AND a.apr_acc = true
 		AND a.rec_acc = false
 		ORDER BY a.cod_acc, c.username");
-		
+	*/
 		
 		return View::make('workflow.edit')
 		->with('registro', $registro)
@@ -465,6 +481,14 @@ class WorkflowController extends Controller
 				bandejadoc0_.campo9 as campo12_19_,
 				bandejadoc0_.campo10 as campo13_19_,
 				bandejadoc0_.campo11 as campo14_19_,
+				bandejadoc0_.campo12 as campo15_19_,
+				bandejadoc0_.campo13 as campo16_19_,
+				bandejadoc0_.campo14 as campo17_19_,
+				bandejadoc0_.campo15 as campo18_19_,
+				bandejadoc0_.campo16 as campo19_19_,
+				bandejadoc0_.campo17 as campo20_19_,
+				bandejadoc0_.campo18 as campo21_19_,
+				bandejadoc0_.campo19 as campo22_19_,
 				bandejadoc0_.seleccionado as selecci15_19_,
 				bandejadoc0_.archivado as archivado19_,
 				bandejadoc0_.fecha as fecha19_,
@@ -495,15 +519,142 @@ class WorkflowController extends Controller
 		return View::make('workflow.consulta')->with('procesos', $procesos);
 		
 	}
+	
+	public function disponibilidad(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		$procesos = DB::select(DB::raw("
+		select 	bandejadoc0_.id as id19_,
+				bandejadoc0_.archivo as archivo19_,
+				bandejadoc0_.campo0 as campo3_19_,
+				bandejadoc0_.campo1 as campo4_19_,
+				bandejadoc0_.campo2 as campo5_19_,
+				bandejadoc0_.campo3 as campo6_19_, 
+				bandejadoc0_.campo4 as campo7_19_, 
+				bandejadoc0_.campo5 as campo8_19_, 
+				bandejadoc0_.campo6 as campo9_19_, 
+				bandejadoc0_.campo7 as campo10_19_,
+				bandejadoc0_.campo8 as campo11_19_, 
+				bandejadoc0_.campo9 as campo12_19_,
+				bandejadoc0_.campo10 as campo13_19_,
+				bandejadoc0_.campo11 as campo14_19_,
+				--bandejadoc0_.campo12 as campo15_19_,
+				--bandejadoc0_.campo13 as campo16_19_,
+				--bandejadoc0_.campo14 as campo17_19_,
+				--bandejadoc0_.campo15 as campo18_19_,
+				--bandejadoc0_.campo16 as campo19_19_,
+				--bandejadoc0_.campo17 as campo20_19_,
+				--bandejadoc0_.campo18 as campo21_19_,
+				--bandejadoc0_.campo19 as campo22_19_,
+				bandejadoc0_.seleccionado as selecci15_19_,
+				bandejadoc0_.archivado as archivado19_,
+				bandejadoc0_.fecha as fecha19_,
+				bandejadoc0_.tip_car as tip18_19_,
+				bandejadoc0_.pre_doc as pre20_19_,
+				bandejadoc0_.con_doc as con21_19_,
+				case
+					when (bandejadoc0_.num_rev = 1) then (bandejadoc0_.fec_rev::date + '09:00'::time)
+					when (bandejadoc0_.num_rev = 2) then (bandejadoc0_.fec_rev::date + '12:00'::time) 
+					when (bandejadoc0_.num_rev = 3) then (bandejadoc0_.fec_rev::date + '15:00'::time) 
+					else (bandejadoc0_.fec_rev::date + '09:00'::time)
+				end as startDate,
+				case
+					when (bandejadoc0_.num_rev = 1) then (bandejadoc0_.fec_rev::date + '12:00'::time)
+					when (bandejadoc0_.num_rev = 2) then (bandejadoc0_.fec_rev::date + '15:00'::time)
+					when (bandejadoc0_.num_rev = 3) then (bandejadoc0_.fec_rev::date + '18:00'::time)
+					else (bandejadoc0_.fec_rev::date + '12:00'::time)
+				end as endDate,
+				bandejadoc0_.fec_rev::date as fec22_19_,
+				bandejadoc0_.num_rev as fec23_19_,
+				bandejadoc0_.por_tmp as por23_19_,
+				--bandejadoc0_.cod_nvl as cod24_19_,
+				bandejadoc0_.cod_est as cod25_19_,
+				bandejadoc0_.archivador as archivador19_,
+				bandejadoc0_.usuario as usuario19_--,
+				--bandejadoc0_.id_wf2 as id28_19_ 
+				from	mocp0047 bandejadoc0_, 
+						mocp0023 logaccion1_ 
+				where	bandejadoc0_.id = logaccion1_.id_doc_bndj
+				and		bandejadoc0_.archivador='102' 
+				and   (	(bandejadoc0_.id , logaccion1_.cod_log) in
+						(select logaccion2_.id_doc_bndj, max(logaccion2_.cod_log)
+						from	mocp0023 logaccion2_,
+								mocp0047 bandejadoc3_ 
+						where logaccion2_.id_doc_bndj=bandejadoc3_.id 
+						group by logaccion2_.id_doc_bndj)) 
+						order by bandejadoc0_.id"));
+		
+		return View::make('workflow.disponibilidad')->with('procesos',$procesos);
+	}
+	
+	public function create_agenda(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		
+		$acciones_disponibles = $this->get_acciones(true,99);
+		return View::make('workflow.create_agenda')
+		->with('acciones_disponibles',$acciones_disponibles);
+	}
+	
+	public function create_cargamasiva(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		
+		$acciones_disponibles = $this->get_acciones(true,99);
+		return View::make('workflow.create_cargamasiva')
+		->with('acciones_disponibles',$acciones_disponibles);
+	}
+	
 	public function downloadfile($id, $consecutivo)
     {
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		
         //
-		$documento = DB::select("
-			select archivo
+		$documento = DB::select("SELECT archivo
 			from	mocp0048
 			where	codigo = ". $id ."
 			and		consecutivo = '". $consecutivo ."'")[0];
 		return response()->download(Storage::disk('pcjllamas')->getDriver()->getAdapter()->getPathPrefix().'seguros/'.$documento->archivo);
 		
+	}
+	
+	public function get_acciones($tipo_accion, $act_ant){
+		//tipo accion -> aprov / rechazo
+		if($tipo_accion){
+			//aprov
+			$acciones_disponibles = DB::select("SELECT
+			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
+			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
+			WHERE a.cod_act = d.cod_act
+			AND a.cod_act = c.cod_act 
+			AND a.cod_act_anterior = ".$act_ant."
+			AND c.username = e.username
+			AND a.apr_acc = true
+			AND a.rec_acc = false
+			ORDER BY a.cod_acc, c.username");
+		}
+		else{
+			//rechazo
+			$acciones_disponibles = DB::select("SELECT
+			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
+			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
+			WHERE a.cod_act = d.cod_act
+			AND a.cod_act = c.cod_act 
+			AND a.cod_act_anterior = ".$act_ant."
+			AND c.username = e.username
+			AND a.apr_acc = false
+			AND a.rec_acc = true
+			ORDER BY a.cod_acc, c.username");
+		}
+		
+		return $acciones_disponibles;
 	}
 }

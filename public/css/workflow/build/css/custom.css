@@ -4181,6 +4181,12 @@ ul.notifications {
 }
 
 
+.bot{
+	color:#fff;
+	
+}
+
+
 @media (max-width: 767px) {
    .dataTables_length { float:none; }
 }

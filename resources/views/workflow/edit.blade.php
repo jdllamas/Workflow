@@ -323,15 +323,31 @@ q																</div>
           </div>
         </div>
         <!-- /page content -->
-		<!--
+		
 		<script type="text/javascript">
-			$(document).ready(function(){
-				function onFinishCallback(){
-				$('#wizard').smartWizard('showMessage','Finish Clicked');
-			} 
+			function myFunction(dept) {
+				// Example call to load a new department
+				oTable.fnReloadAjax( "{{ url('/asset/department')}}"+"?option="+dept );      
+				// Example call to reload from original file
+				//oTable.fnReloadAjax();
+			}   
+			jQuery(document).ready(function($){
+				$('#make').change(function(){
+					dept =  $(this).val();
+					//myFunction(dept);
+					$.post("{{ url('/workflow/loadacciones')}}",
+							{ option: dept },
+							function(data) {
+							var model = $('#model');
+							model.empty();
+							$.each(data, function(index, element) {
+							model.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+							});
+					});
+				}); 
 			});
 		</script>
-		-->
+		
 @stop
 <!--6581128-->
 <!--229392650-->
