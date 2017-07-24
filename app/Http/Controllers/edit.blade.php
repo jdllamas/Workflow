@@ -115,7 +115,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-				  <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="{{ route('workflow.update',$registro->id) }}" autocomplete=off>
+				  <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="{{route('workflow.update',$registro->id)}}" autocomplete=off>
 				  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 				  <input type="hidden" name="_method" value="PUT" />
                     <!-- Smart Wizard -->

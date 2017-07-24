@@ -35,27 +35,18 @@
                           <a href="#step-2">
                             <span class="step_no">2</span>
                             <span class="step_descr">
-                                              Paso 2<br />
-                                              <small>Paso 2 Registro de servicios</small>
-                                          </span>
+                                Paso 2<br />
+                                <small>Paso 2 Asignación de actividades</small>
+                            </span>
                           </a>
                         </li>
                         <li>
                           <a href="#step-3">
                             <span class="step_no">3</span>
                             <span class="step_descr">
-                                              Paso 3<br />
-                                              <small>Paso 3 Asignación de actividades</small>
-                                          </span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-4">
-                            <span class="step_no">4</span>
-                            <span class="step_descr">
-                                              Paso 4<br />
-                                              <small>Paso 4 Manejo de archivos</small>
-                                          </span>
+								Paso 3<br />
+								<small>Paso 3 Manejo de archivos</small>
+                            </span>
                           </a>
                         </li>
                       </ul>
@@ -68,77 +59,46 @@
 										<h2>Información general</h2>                  
 										<div class="clearfix"></div>
 										</div>
+										@foreach($campos as $campo)
 										<div class="form-group"><br>
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IDENTIFICACION</label>
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="campo{{ $loop->index }}">{{$campo->descripcion}}</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="identificacion" name="identificacion" required="required" class="form-control col-md-7 col-xs-12"/>
+											<input type="text" id="campo{{ $loop->index }}" name="campo{{ $loop->index }}" required="required" class="form-control col-md-7 col-xs-12"/>
 										</div>
 										</div>
-										<div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">NOMBRES</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="nombres" name="nombres" required="required" class="form-control col-md-7 col-xs-12"/>
-										</div>
-										</div>
-										
+										@endforeach
 									</div>
 								</div>
 							<!----->         
 						</div>
 					
-						<div id="step-2">							
+						<div id="step-2">
+							
 							<!------>
 								<div class="col-md-1"></div>
 								<div class="col-md-10"><br><br>
 									<div class="x_panel">
-									  <div class="x_title">
-										<h2>Registrar servicios</h2>                  
-										<div class="clearfix"></div>
-									  </div>
-										  <div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">TIPO SERVICIO<span class="required"></span>
-											</label>
+										<div class="x_title">
+											<h2>Asignar actividad</h2>                  
+											<div class="clearfix"></div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_servicio">FECHA AGENDAMIENTO</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<select id="tipo_servicio" name="tipo_servicio" class="select2_single form-control" tabindex="-1">
-													<option></option>
-													<option value="VENTA DE SEGURO">VENTA DE SEGURO</option>
+												<input type="text" id="fecha_servicio" name="fecha_servicio" class="form-control" data-date-format="dd-mm-yyyy"/> <!-- local -->
+												<!-- <input type="text" id="fecha_servicio" name="fecha_servicio" class="form-control" data-date-format="mm-dd-yyyy"/> --> <!-- server -->
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="hora_servicio">HORA AGENDAMIENTO<span class="required"></span></label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<select id="hora_servicio" name="hora_servicio" class="select2_single form-control" tabindex="-1">
+													<option value="1">09:00 - 12:00</option>
+													<option value="2">12:00 - 15:00</option>
+													<option value="3">15:00 - 18:00</option>
 												</select>
 											</div>
-										  </div>
-											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">IDENTIFICACION DE SERVICIO</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" id="id_servicio" name="id_servicio" required="required" class="form-control col-md-7 col-xs-12"/>
-												</div>
-											</div>
-										  <div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12">PROCESO</label>
-											<div class="col-md-6 col-sm-6 col-xs-12">
-											  <div id="gender" class="btn-group" data-toggle="buttons">
-												<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-												  <input type="radio" name="estado" value="0"> &nbsp; Rechazado &nbsp;
-												</label>
-												<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-												  <input type="radio" name="estado" value="1" checked="checked">  Aprobado 
-												</label>
-											  </div>
-											</div>
-										  </div>
-									</div>
-								</div>
-							<!----->
-							
-						</div>
-						<div id="step-3">						   
-							
-							<!------>
-								<div class="col-md-1"></div>
-								<div class="col-md-10"><br><br>
-									<div class="x_panel">
-									  <div class="x_title">
-										<h2>Asignar actividad</h2>                  
-										<div class="clearfix"></div>
-									  </div>
+										</div>
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">ACTIVIDADES / USUARIOS</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
@@ -161,7 +121,7 @@
 							<!----->
 						</div>
                      
-						<div id="step-4">
+						<div id="step-3">
 								<div class="x_content">
 									<!--------->
 									<div class="container-fluid adm-archivos">
@@ -178,7 +138,7 @@
 															<label>TIPO DE ARCHIVO</label>
 															<select class="form-control" id="tipo_archivo" name="tipo_archivo">
 																<option value="1">
-																	Documento Inicial
+																	Documento
 																</option>
 															</select>
 														</div>
@@ -320,15 +280,26 @@ q																</div>
           </div>
         </div>
         <!-- /page content -->
-		<!--
-		<script type="text/javascript">
-			$(document).ready(function(){
-				function onFinishCallback(){
-				$('#wizard').smartWizard('showMessage','Finish Clicked');
-			} 
-			});
+		<script>
+			window.onload = function(){				
+
+			@if(Session::has('message'))
+				alert('{{ Session::get('message') }}');
+			@endif
+		
+			$('input[name="fecha_servicio"]').daterangepicker({
+				singleDatePicker: true,
+				showDropdowns: true,
+				minDate: moment(),
+				locale: {
+					//format: "DD-MM-YYYY" // local
+					format: "MM-DD-YYYY" //server
+				}
+				
+				});
+			};
 		</script>
-		-->
+		
 @stop
 <!--6581128-->
 <!--229392650-->

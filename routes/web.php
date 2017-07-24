@@ -22,6 +22,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('role', 'RoleController');
 Route::resource('permission', 'PermissionController');
 
+Route::post('/workflow/import_cargamasiva', 'WorkflowController@import_cargamasiva');
+Route::post('/workflow/nuevo_turno', 'WorkflowController@nuevo_turno');
 Route::get('/workflow/downloadfile/{id}/{consecutivo}', 'WorkflowController@downloadfile');
 Route::get('/workflow/create_cargamasiva', 'WorkflowController@create_cargamasiva');
 Route::get('/workflow/create_agenda', 'WorkflowController@create_agenda');

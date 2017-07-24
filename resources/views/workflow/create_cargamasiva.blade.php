@@ -18,7 +18,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-				  <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="{{ url('/workflow') }}" autocomplete=off>
+				  <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="{{ url('/workflow/import_cargamasiva') }}" autocomplete=off>
 				  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <!-- Smart Wizard -->
                     <div id="wizard" class="form_wizard wizard_horizontal">
@@ -36,7 +36,7 @@
                             <span class="step_no">2</span>
                             <span class="step_descr">
                                               Paso 2<br />
-                                              <small>Paso 2 Registro de servicios</small>
+                                              <small>Paso 2 Asignar actividad</small>
                                           </span>
                           </a>
                         </li><!--
@@ -80,7 +80,7 @@
 																	<div class="btn btn-default carga-archivo-input"> 
 																		<span class="glyphicon glyphicon-folder-open"></span>
 																		<span class="carga-archivo-input-title">Seleccionar archivo</span>
-																		<input type="file" name="archivo" onchange="$('#upload-file-info').val($(this).val().split(/(\\|\/)/g).pop());"/>
+																		<input type="file" id="archivo" name="archivo" onchange="$('#upload-file-info').val($(this).val().split(/(\\|\/)/g).pop());"/>
 																		<!-- rename it -->
 																	</div>
 																 </span>
@@ -180,13 +180,7 @@
 												@endforeach
 											</select>
 											</div>
-										</div>											  
-										<div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12">OBSERVACIONES </label>
-											<div class="col-md-6 col-sm-6 col-xs-12">
-												<textarea id="observaciones" required="required" class="form-control" name="observaciones"></textarea>
-											</div>
-										</div>
+										</div>	
 											
 									</div>
 								</div>

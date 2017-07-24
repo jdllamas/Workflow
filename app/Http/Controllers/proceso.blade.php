@@ -76,7 +76,7 @@
 									
 					<div class="x_panel">
 					  <div class="x_title">
-							<a  href="\workflow\disponibilidad" class="btn btn-dark" role="button">Calendario</a>
+							<a  href="\workflow\disponibilidad" class="btn btn-dark" role="button">Carga Masiva</a>
 						@if (count($puede_agendar))
 							<a  href="\workflow\create" class="btn btn-warning" role="button">Nuevo Proceso</a>
 						@endif
@@ -93,9 +93,10 @@
 									<th>Identificación</th>
 									<th>Tercero</th>
 									<th>Tipo Servicio</th>
+									<th>Porcentaje (%)</th>
 									<th>Ver</th>
 									<th>Editar</th>
-									<!--<th>Eliminar</th>-->
+									<!--<th>Eliminar</th>->
 								</tr>
 							  </thead>
 							  <tbody>
@@ -111,6 +112,7 @@
 									<td>{{$proceso->campo3_19_}}</td>
 									<td>{{$proceso->campo4_19_}}</td>
 									<td>{{$proceso->campo5_19_}}</td>
+									<td>{{$proceso->por23_19_}}%</td>							
 									<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="/workflow/{{$proceso->id19_}}" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
 									<td><p data-placement="top" data-toggle="tooltip" title="Editar"><a href="/workflow/{{$proceso->id19_}}/edit" class="btn btn-primary btn-xs" data-title="Editar"><span class="glyphicon glyphicon-pencil"></span></a></p></td><!--
 									<td><p data-placement="top" data-toggle="tooltip" title="Eliminar"><a href="" class="btn btn-danger btn-xs" data-title="Eliminar"><span class=" glyphicon glyphicon-trash"></span></a></p></td>-->

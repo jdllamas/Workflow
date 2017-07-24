@@ -46,6 +46,7 @@
 											<div class="col-md-6 col-sm-6 col-xs-12">
 												<div id="datetime-local" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
 													<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+													
 													<span></span> <b class="caret"></b>
 												</div>
 											</div>
@@ -54,11 +55,11 @@
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">HORA<span class="required"></span>
 											</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<select id="tipo_servicio" name="tipo_servicio" class="select2_single form-control" tabindex="-1">
+												<select id="hora_servicio" name="hora_servicio" class="select2_single form-control" tabindex="-1">
 													<option></option>
-													<option value="1">9-12</option>
-													<option value="2">12-15</option>
-													<option value="3">15-18</option>
+													<option value="1">09:00 - 12:00</option>
+													<option value="2">12:00 - 15:00</option>
+													<option value="3">15:00 - 18:00</option>
 												</select>
 											</div>
 										  </div>

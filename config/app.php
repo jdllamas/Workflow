@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 		
 		Zizaco\Entrust\EntrustServiceProvider::class,
+		Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -230,6 +231,7 @@ return [
 		
 		
 		'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

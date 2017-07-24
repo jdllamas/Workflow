@@ -11,6 +11,7 @@ use Session;
 use Storage;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WorkflowController extends Controller
 {
@@ -86,7 +87,8 @@ class WorkflowController extends Controller
 					--campo0_.cod_nvl as cod18_12_0_ 
 					from mocp0002 campo0_ where campo0_.codigo='102'"));
 		//return $archivador;
-		$procesos = DB::select(DB::raw("
+		
+		$query ="
 		select 	bandejadoc0_.id as id19_,
 				bandejadoc0_.archivo as archivo19_,
 				bandejadoc0_.campo0 as campo3_19_,
@@ -127,10 +129,14 @@ class WorkflowController extends Controller
 								mocp0047 bandejadoc3_ 
 						where logaccion2_.id_doc_bndj=bandejadoc3_.id 
 						group by logaccion2_.id_doc_bndj)) 
-						order by bandejadoc0_.id"));
-		
+						order by bandejadoc0_.id";
+		//return $query;
+		$procesos = DB::select(DB::raw($query));
 		//return $procesos;
-		return View::make('workflow.proceso')->with('procesos', $procesos);
+		$puede_agendar = $this->puede_ejecutar(99);
+		return View::make('workflow.proceso')
+		->with('procesos', $procesos)
+		->with('puede_agendar', $puede_agendar);
     }
 	
 	public function estadistica()
@@ -156,7 +162,6 @@ class WorkflowController extends Controller
 					group by logaccion2_.id_doc_bndj)) 
 					group by logaccion1_.username
 					order by logaccion1_.username
-
 		");
 		$usuarios = array();
 		$count_proc = array();
@@ -181,7 +186,7 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		
+		$campos = $this->get_campos(102);
 		$acciones_disponibles = $this->get_acciones(true,99);
 		/*
 		DB::select("SELECT
@@ -195,8 +200,10 @@ class WorkflowController extends Controller
 		AND a.rec_acc = false
 		ORDER BY a.cod_acc, c.username");
 		*/
+		//return $campos;
 		return View::make('workflow.create')
-		->with('acciones_disponibles',$acciones_disponibles);
+		->with('acciones_disponibles',$acciones_disponibles)
+		->with('campos',$campos);
     }
 
     /**
@@ -211,7 +218,8 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
-		//return Input::all();
+		/*
+		return Input::all();
 		$rules= array(
 				'identificacion'=> 'required',
 				'nombres'=> 'required',
@@ -224,7 +232,7 @@ class WorkflowController extends Controller
 
 		   return redirect()->back()->withErrors($validate)->withInput();
 		}
-		
+		*/
 		/*
 		
 		-- *******************************************************************************************--
@@ -255,8 +263,19 @@ class WorkflowController extends Controller
 			$existen = (empty($registros) ? false : true);
 		}
 		//return $sig_seq;
-		DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
-					values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
+		
+		$campos = $this->get_campos(102);
+		$campos_string = "";
+		$campos_data = "";
+		$i = 0;
+		foreach($campos as $campo){
+			$campos_string .= ", campo" . $i; 
+			$campos_data .= ",'" . Input::get('campo'.$i)."'";
+			$i +=1;
+		}
+		//return $campos_data;
+		DB::insert("insert into mocp0047 (id, cod_est" . $campos_string .", usuario, archivador, fec_rev, num_rev)
+					values (" . $sig_seq . ",'2'". $campos_data .",'" .Session::get('username')."','102',timestamp '" . Input::get('fecha_servicio')  . "','" . Input::get('hora_servicio') ."')");
 		
 		/*
 		-- *******************************************************************************************--
@@ -277,9 +296,6 @@ class WorkflowController extends Controller
 			
 			$file->storeAs('seguros/' , $file->getClientOriginalName());
 		}
-		
-		
-		
 		
 		/*
 		-- *******************************************************************************************--
@@ -341,12 +357,14 @@ class WorkflowController extends Controller
 			return redirect()->intended('/login');
 		}
 		$registros = DB::table(DB::raw("mocp0047 where id = " . $id))->first();
-		$logs = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id))->get();
+		$logs = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id))->orderBy('cod_log')->get();
 		$documentos = DB::table(DB::raw("mocp0048 a left join mocp0032 b on a.cod_tp_doc = b.cod_tp_doc where a.codigo = " . $id))->get();
+		$campos = $this->get_campos(102);
 		return View::make('workflow.show')
 		->with('registros', $registros)
 		->with('logs', $logs)
-		->with('documentos', $documentos);
+		->with('documentos', $documentos)
+		->with('campos', $campos);
     }
 
     /**
@@ -364,6 +382,7 @@ class WorkflowController extends Controller
 		$registro = DB::table(DB::raw("mocp0047 where id = " . $id))->first();
 		$logs = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id))->get();
 		$documentos = DB::table(DB::raw("mocp0048 where codigo = " . $id))->get();
+		$campos = $this->get_campos(102);
 		$ultimolog = DB::table(DB::raw("mocp0023 logs, mocp0022 acc, mocp0026 act where acc.cod_act = act.cod_act and logs.cod_acc = acc.cod_acc and logs.id_doc_bndj = " . $id. " order by cod_log desc"))->first();
 		$acciones_disponibles = DB::select("
 			SELECT
@@ -395,7 +414,8 @@ class WorkflowController extends Controller
 		->with('registro', $registro)
 		->with('logs', $logs)
 		->with('documentos', $documentos)
-		->with('acciones_disponibles',$acciones_disponibles);
+		->with('acciones_disponibles',$acciones_disponibles)
+		->with('campos', $campos);
 		//return array($registro,$log,$documentos);
     }
 
@@ -421,30 +441,45 @@ class WorkflowController extends Controller
 			$existen = (empty($registros) ? false : true);
 		}
 		list($usuario, $cod_acc) = explode("-",Input::get('usuario_accion'));
-		$cod = $sig_seq = (int)str_replace(' ', '', $cod_acc);
+		$cod = (int)str_replace(' ', '', $cod_acc);
 		if($cod == 0){
 			DB::statement("UPDATE mocp0047 SET cod_est = 3 where id = " . $id);
+			//return redirect()->intended('/workflow/proceso');
 		}
 		else{
-			DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
-			values (". $sig_seq_2 .",".$cod_acc .",".$id.",'".$usuario."','". Input::get('observaciones') ."')"); 
+			$query = (string)"insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log) values (". $sig_seq_2 .",".$cod .",".$id.",'".$usuario."','". Input::get('observaciones') ."')";
+			try{
+				DB::statement($query);
+			}
+			catch(Exception $ex){
+				return "Insert No Ok";
+			}
 		}
+		
 		
 		$file = $request->file('archivo');
 		if($request->hasFile('archivo'))
 		{
 			//$procesos = DB::select(DB::raw("SELECT consecutivo from mocp0048 where codigo = " . $sig_seq);
 			//return $sig_seq;
-		DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
-					values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
+			//DB::insert("insert into mocp0047 (id, cod_est, campo0,campo1,campo2,campo3, usuario, archivador)
+			//		values (" . $sig_seq . ",'2','" . Input::get('identificacion') . "','" . Input::get('nombres') . "','" . Input::get('tipo_servicio')  . "','" . Input::get('id_servicio') . "','" .Session::get('username')."','102')");
 					
 			$ultimo_documento = DB::select("
 			select codigo, max(cast(consecutivo as integer)) as consecutivo
 			from mocp0048
 			where codigo =". $id ."
 			group by codigo
-			order by codigo")[0];
-			$sig_consecutivo = str_pad(($ultimo_documento->consecutivo) + 1, 5, '0', STR_PAD_LEFT);
+			order by codigo");
+			
+			if(count(collect($ultimo_documento))){
+				$ultimo_doc = $ultimo_documento[0];
+				$sig_consecutivo = str_pad(($ultimo_doc->consecutivo) + 1, 5, '0', STR_PAD_LEFT);
+			}
+			else{
+				$sig_consecutivo = str_pad(1, 5, '0', STR_PAD_LEFT);
+			}
+			
 			DB::insert("insert into mocp0048 (codigo, consecutivo, archivo, arc_org, usuario) 
 					values (". $id .",'".$sig_consecutivo."','". $file->getClientOriginalName() ."','". $file->getClientOriginalName() ."','".Session::get('username'). "')"); 
 			
@@ -525,8 +560,205 @@ class WorkflowController extends Controller
 		if(!Session::has('username')){
 			return redirect()->intended('/login');
 		}
+		$procesos = $this->get_procesos();
+		$acciones_disponibles = $this->get_acciones(true,99);
+		
+		$puede_importar_agenda = $this->puede_ejecutar(100);
+		$puede_agendar = $this->puede_ejecutar(99);
+		return View::make('workflow.disponibilidad')
+		->with('procesos',$procesos)
+		->with('acciones_disponibles',$acciones_disponibles)
+		->with('puede_agendar',$puede_agendar)
+		->with('puede_importar_agenda',$puede_importar_agenda);
+	}
+	
+	public function create_agenda(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		$acciones_disponibles = $this->get_acciones(true,100);
+		return View::make('workflow.create_agenda')
+		->with('acciones_disponibles',$acciones_disponibles);
+	}
+	
+	public function nuevo_turno(Request $request){
+		
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		
+		$procesos_count = DB::select(DB::raw("SELECT count(*) from mocp0047 a
+			WHERE a.num_rev = ". Input::get('hora_servicio') . " and a.fec_rev::date = '". Input::get('fecha_servicio') . "'"));
+		
+		$acciones_disponibles = $this->get_acciones(true,99);
+		$procesos_count_int = (int)str_replace(' ', '', $procesos_count);
+		if($procesos_count_int > 8){
+			$procesos = $this->get_procesos();
+			return redirect()->intended('/workflow/disponibilidad')
+			->with('message','Ha alcanzado el limite de agendamientos para este rango.')
+			->with('procesos',$procesos)
+			->with('acciones_disponibles',$acciones_disponibles);
+		}
+		
+		$existen = true;
+		while($existen){
+			$seq_num = DB::table(DB::raw("nextval('documento_seq')"))->value('nextval');
+			$sig_seq = (int)str_replace(' ', '', $seq_num);
+			$registros = DB::table(DB::raw("mocp0047 where id = " . $sig_seq))->value('id');
+			$existen = (empty($registros) ? false : true);
+		}
+		
+		DB::insert("insert into mocp0047 (id, cod_est, fec_rev, num_rev, usuario, archivador)
+				values (" . $sig_seq . ",'2',timestamp '" . Input::get('fecha_servicio')  . "','" . Input::get('hora_servicio') . "','" .Session::get('username')."','102')");
+		
+		list($usuario, $cod_acc) = explode("-",Input::get('usuario_accion'));
+		$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
+		$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
+		DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
+		values (". $sig_seq_2 .",".$cod_acc .",".$sig_seq .",'".$usuario."','". Input::get('observaciones') ."')");
+		
+		$procesos = $this->get_procesos();
+		$codigo_asignacion = str_pad($sig_seq, 4, '0', STR_PAD_LEFT);
+		return redirect()->intended('/workflow/disponibilidad')
+		->with('message','Codigo de asignacion: ' . $codigo_asignacion . '. Recuerde que este código debe ser insertado en el turno de agendamiento del archivo de backoffice.')
+		->with('procesos',$procesos)
+		->with('acciones_disponibles',$acciones_disponibles);
+		
+	}
+	
+	public function create_cargamasiva(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		$acciones_disponibles = $this->get_acciones(true,100);
+		return View::make('workflow.create_cargamasiva')
+		->with('acciones_disponibles',$acciones_disponibles);
+	}
+	
+	public function import_cargamasiva(Request $request){
+		
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		$file = $request->file('archivo');
+		if($request->hasFile('archivo'))
+		{
+			$datos = (Excel::load($file, function ($reader) {
+            })->get());
+			//return $datos;
+		}
+		
+		foreach($datos as $agendamiento){
+			if(!is_null($agendamiento->codigo_agendamiento)){
+				
+				$cod_proc = (int)str_replace(' ', '', $agendamiento->codigo_agendamiento);
+				$data = DB::table(DB::raw("mocp0047 where id = " . $cod_proc))->get();
+				DB::statement("
+				UPDATE mocp0047
+				SET 
+				campo0 = '". $agendamiento->nombre_del_cliente . "',
+				campo1 = '". $agendamiento->rut . "',
+				campo2 = '". $agendamiento->telefonos . "',
+				campo3 = '". $agendamiento->e_mail . "',
+				campo4 = '". $agendamiento->direccion . "',
+				campo5 = '". $agendamiento->comuna . "',
+				campo6 = '". $agendamiento->fecha_venta . "',
+				campo7 = '". $agendamiento->n0_poliza_primer_medio_pago . "',
+				campo8 = '". $agendamiento->n0_poliza_segundo_medio_pago . "',
+				campo9 = '". $agendamiento->emisor_1 . "',
+				campo10 = '". $agendamiento->emisor_2 . "',
+				campo11 = '". $agendamiento->cantidad_credenciales_cruz_verde . "',
+				campo12 = '". $agendamiento->gestion . "',
+				campo13 = '". $agendamiento->polizas_muerte_accidental_hospitalizacion . "'				
+				where id = " . $cod_proc);
+				
+				$existen = true;
+				while($existen){
+					$seq_num_2 = DB::table(DB::raw("nextval('log_accion_seq')"))->value('nextval');
+					$sig_seq_2 = (int)str_replace(' ', '', $seq_num_2);
+					$registros = DB::table(DB::raw("mocp0023 where cod_log = " . $sig_seq_2))->value('cod_log');
+					$existen = (empty($registros) ? false : true);
+				}
+				list($usuario, $cod_acc) = explode("-",Input::get('usuario_accion'));
+				$cod = $sig_seq = (int)str_replace(' ', '', $cod_acc);
+				if($cod == 0){
+					DB::statement("UPDATE mocp0047 SET cod_est = 3 where id = " . $id);
+				}
+				else{
+					DB::insert("insert into mocp0023 (cod_log, cod_acc, id_doc_bndj, username, obs_log)
+					values (". $sig_seq_2 .",".$cod_acc .",".$cod_proc.",'".$usuario."','". $agendamiento->observacion ."')"); 
+				}
+			}
+		}
+		
+		$acciones_disponibles = $this->get_acciones(true,99);
+		return View::make('workflow.create_cargamasiva')
+		->with('acciones_disponibles',$acciones_disponibles);
+	}
+	
+	public function downloadfile($id, $consecutivo)
+    {
+		if(!Session::has('username')){
+			return redirect()->intended('/login');
+		}
+		
+        //
+		$documento = DB::select("SELECT archivo
+			from	mocp0048
+			where	codigo = ". $id ."
+			and		consecutivo = '". $consecutivo ."'")[0];
+		return response()->download(Storage::disk('kronos')->getDriver()->getAdapter()->getPathPrefix().'seguros/'.$documento->archivo);
+		
+	}
+	
+	public function get_acciones($tipo_accion, $act_ant){
+		//tipo accion -> aprov / rechazo
+		if($tipo_accion){
+			//aprov
+			$acciones_disponibles = DB::select("SELECT
+			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
+			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
+			WHERE a.cod_act = d.cod_act
+			AND a.cod_act = c.cod_act 
+			AND a.cod_act_anterior = ".$act_ant."
+			AND c.username = e.username
+			AND a.apr_acc = true
+			AND a.rec_acc = false
+			ORDER BY a.cod_acc, c.username");
+		}
+		else{
+			//rechazo
+			$acciones_disponibles = DB::select("SELECT
+			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
+			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
+			WHERE a.cod_act = d.cod_act
+			AND a.cod_act = c.cod_act 
+			AND a.cod_act_anterior = ".$act_ant."
+			AND c.username = e.username
+			AND a.apr_acc = false
+			AND a.rec_acc = true
+			ORDER BY a.cod_acc, c.username");
+		}
+		
+		return $acciones_disponibles;
+	}
+	
+	public function get_campos($archivador){
+		$campos = DB::select(DB::raw("
+		select * from mocp0002
+		where codigo = '". $archivador ."'
+		order by codigo, consecutivo::int
+		"));
+						
+		return $campos;
+	}
+	
+	public function get_procesos(){
 		$procesos = DB::select(DB::raw("
-		select 	bandejadoc0_.id as id19_,
+			select 	bandejadoc0_.id as id19_,
 				bandejadoc0_.archivo as archivo19_,
 				bandejadoc0_.campo0 as campo3_19_,
 				bandejadoc0_.campo1 as campo4_19_,
@@ -585,76 +817,11 @@ class WorkflowController extends Controller
 						where logaccion2_.id_doc_bndj=bandejadoc3_.id 
 						group by logaccion2_.id_doc_bndj)) 
 						order by bandejadoc0_.id"));
-		
-		return View::make('workflow.disponibilidad')->with('procesos',$procesos);
+						
+		return $procesos;
 	}
-	
-	public function create_agenda(Request $request){
+	public function puede_ejecutar($cod_accion){
+		return DB::select(DB::raw("select * from mocp0027 where cod_act = ". $cod_accion ." and username ='".Session::get('username')."'"));
 		
-		if(!Session::has('username')){
-			return redirect()->intended('/login');
-		}
-		
-		$acciones_disponibles = $this->get_acciones(true,99);
-		return View::make('workflow.create_agenda')
-		->with('acciones_disponibles',$acciones_disponibles);
-	}
-	
-	public function create_cargamasiva(Request $request){
-		
-		if(!Session::has('username')){
-			return redirect()->intended('/login');
-		}
-		
-		$acciones_disponibles = $this->get_acciones(true,99);
-		return View::make('workflow.create_cargamasiva')
-		->with('acciones_disponibles',$acciones_disponibles);
-	}
-	
-	public function downloadfile($id, $consecutivo)
-    {
-		if(!Session::has('username')){
-			return redirect()->intended('/login');
-		}
-		
-        //
-		$documento = DB::select("SELECT archivo
-			from	mocp0048
-			where	codigo = ". $id ."
-			and		consecutivo = '". $consecutivo ."'")[0];
-		return response()->download(Storage::disk('pcjllamas')->getDriver()->getAdapter()->getPathPrefix().'seguros/'.$documento->archivo);
-		
-	}
-	
-	public function get_acciones($tipo_accion, $act_ant){
-		//tipo accion -> aprov / rechazo
-		if($tipo_accion){
-			//aprov
-			$acciones_disponibles = DB::select("SELECT
-			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
-			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
-			WHERE a.cod_act = d.cod_act
-			AND a.cod_act = c.cod_act 
-			AND a.cod_act_anterior = ".$act_ant."
-			AND c.username = e.username
-			AND a.apr_acc = true
-			AND a.rec_acc = false
-			ORDER BY a.cod_acc, c.username");
-		}
-		else{
-			//rechazo
-			$acciones_disponibles = DB::select("SELECT
-			a.cod_acc, c.username, d.des_act, d.des_act||' / ' || e.nombre as usr_act
-			FROM mocp0022 a, mocp0027 c, mocp0026 d, users e
-			WHERE a.cod_act = d.cod_act
-			AND a.cod_act = c.cod_act 
-			AND a.cod_act_anterior = ".$act_ant."
-			AND c.username = e.username
-			AND a.apr_acc = false
-			AND a.rec_acc = true
-			ORDER BY a.cod_acc, c.username");
-		}
-		
-		return $acciones_disponibles;
 	}
 }

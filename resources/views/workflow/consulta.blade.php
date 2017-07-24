@@ -83,7 +83,6 @@
 								<th>Identificación</th>
 								<th>Tercero</th>
 								<th>Tipo Servicio</th>
-								<th>Porcentaje (%)</th>
 								<th>Ver</th>
 							</tr>
 						  </thead>
@@ -100,7 +99,6 @@
 								<td>{{$proceso->campo3_19_}}</td>
 								<td>{{$proceso->campo4_19_}}</td>
 								<td>{{$proceso->campo5_19_}}</td>
-								<td>{{$proceso->por23_19_}}%</td>							
 								<td><p data-placement="top" data-toggle="tooltip" title="Ver"><a href="/workflow/{{$proceso->id19_}}" class="btn btn-success btn-xs" data-title="Ver"><span class="glyphicon glyphicon-file"></span></a></p></td>
 							</tr>                       
 							@endforeach

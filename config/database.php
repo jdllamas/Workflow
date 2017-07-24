@@ -41,7 +41,8 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
+			'host' => env('DB_HOST', '104.236.213.201'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -56,8 +57,8 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            //'host' => '104.236.213.201',
-			'host' => 'localhost',
+            'host' => '104.236.213.201',
+			//'host' => 'localhost',
             'port' => '5432',
             'database' => 'DBCapturaWF',
             'username' => 'postgres',
